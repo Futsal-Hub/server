@@ -124,7 +124,7 @@ describe("POST/registerPlayer", () => {
 
 describe("POST/registerPlayer", () => {
   describe("Error register player", () => {
-    test("error courts value is not an array", (done) => {
+    test("error position long and lat not a number value", (done) => {
       request(app)
         .post("/registerPlayer")
         .send({
