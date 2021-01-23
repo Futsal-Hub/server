@@ -1,11 +1,11 @@
 const request = require("supertest");
 const app = require("../app");
 
-describe("POST/register player", () => {
+describe("POST/player/register", () => {
   describe("Success register player", () => {
     test("response  with success message", (done) => {
       request(app)
-        .post("/registerPlayer")
+        .post("/player/register")
         .send({
           username: "test",
           email: "futsalhub@gmail.com",
@@ -35,11 +35,11 @@ describe("POST/register player", () => {
   });
 });
 
-describe("POST/registerPlayer", () => {
+describe("POST/player/register", () => {
   describe("Error register player", () => {
     test("error empty field email", (done) => {
       request(app)
-        .post("/registerPlayer")
+        .post("/player/register")
         .send({
           username: "test",
           email: "",
@@ -64,11 +64,11 @@ describe("POST/registerPlayer", () => {
   });
 });
 
-describe("POST/registerPlayer", () => {
-  describe("Error registerPlayer", () => {
+describe("POST/player/register", () => {
+  describe("Error player/register", () => {
     test("error empty field password", (done) => {
       request(app)
-        .post("/registerPlayer")
+        .post("/player/register")
         .send({
           username: "test",
           email: "futsalhub@gmail.com",
@@ -93,11 +93,11 @@ describe("POST/registerPlayer", () => {
   });
 });
 
-describe("POST/registerPlayer", () => {
+describe("POST/player/register", () => {
   describe("Error register player", () => {
     test("error empty field role", (done) => {
       request(app)
-        .post("/registerPlayer")
+        .post("/player/register")
         .send({
           username: "test",
           email: "futsalhub@gmail.com",
@@ -122,11 +122,11 @@ describe("POST/registerPlayer", () => {
   });
 });
 
-describe("POST/registerPlayer", () => {
+describe("POST/player/register", () => {
   describe("Error register player", () => {
     test("error position long and lat not a number value", (done) => {
       request(app)
-        .post("/registerPlayer")
+        .post("/player/register")
         .send({
           username: "test",
           email: "futsalhub@gmail.com",
@@ -152,11 +152,11 @@ describe("POST/registerPlayer", () => {
   });
 });
 
-describe("POST/registerPlayer", () => {
+describe("POST/player/register", () => {
   describe("Error register player", () => {
     test("error email field input validity", (done) => {
       request(app)
-        .post("/registerPlayer")
+        .post("/player/register")
         .send({
           username: "test",
           email: "futsalhub",
@@ -184,11 +184,11 @@ describe("POST/registerPlayer", () => {
   });
 });
 
-describe("POST/registerPlayer", () => {
+describe("POST/player/register", () => {
   describe("Error register player", () => {
     test("error email field input uniqueness", (done) => {
       request(app)
-        .post("/registerPlayer")
+        .post("/player/register")
         .send({
           username: "test",
           email: "futsalhub@gmail.com",
@@ -218,11 +218,11 @@ describe("POST/registerPlayer", () => {
 
 // =======================================
 
-describe("POST/loginPlayer", () => {
+describe("POST/player/login", () => {
   describe("Success login player", () => {
     test("response  with access token", (done) => {
       request(app)
-        .post("/loginPlayer")
+        .post("/player/login")
         .send({
           email: "futsalhub@gmail.com",
           password: "123456"
@@ -241,11 +241,11 @@ describe("POST/loginPlayer", () => {
   });
 });
 
-describe("POST/loginPlayer", () => {
+describe("POST/player/login", () => {
   describe("Error login player", () => {
     test("error empty field email", (done) => {
       request(app)
-        .post("/loginPlayer")
+        .post("/player/login")
         .send({
           email: "",
           password: "123456"
@@ -264,11 +264,11 @@ describe("POST/loginPlayer", () => {
   });
 });
 
-describe("POST/loginPlayer", () => {
-  describe("Error loginPlayer", () => {
+describe("POST/player/login", () => {
+  describe("Error player/login", () => {
     test("error empty field password", (done) => {
       request(app)
-        .post("/loginPlayer")
+        .post("/player/login")
         .send({
           email: "futsalhub@gmail.com",
           password: ""
@@ -287,11 +287,11 @@ describe("POST/loginPlayer", () => {
   });
 });
 
-describe("POST/loginPlayer", () => {
-  describe("Error loginPlayer", () => {
+describe("POST/player/login", () => {
+  describe("Error player/login", () => {
     test("error email field input validity", (done) => {
       request(app)
-        .post("/loginPlayer")
+        .post("/player/login")
         .send({
           email: "futsalhub",
           password: "123456"
@@ -313,11 +313,11 @@ describe("POST/loginPlayer", () => {
   });
 });
 
-describe("POST/loginPlayer", () => {
+describe("POST/player/login", () => {
   describe("Error Login player", () => {
     test("email is exist, but password is wrong", (done) => {
       request(app)
-        .post("/loginPlayer")
+        .post("/player/login")
         .send({
           email: "futsalhub@gmail.com",
           password: "123"
@@ -336,11 +336,11 @@ describe("POST/loginPlayer", () => {
   });
 });
 
-describe("POST/LoginPlayer", () => {
-  describe("Error LoginPlayer", () => {
+describe("POST/player/login", () => {
+  describe("Error player/login", () => {
     test("email doesn't exist in database", (done) => {
       request(app)
-        .post("/loginPlayer")
+        .post("/player/login")
         .send({
           email: "futsalhub_palsu@gmail.com",
           password: "123456"

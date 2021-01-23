@@ -1,11 +1,11 @@
 const request = require("supertest");
 const app = require("../app");
 
-describe("POST/registerOwner", () => {
+describe("POST/owner/register", () => {
   describe("Success register owner", () => {
     test("response  with success message", (done) => {
       request(app)
-        .post("/registerOwner")
+        .post("/owner/register")
         .send({
           username: "test",
           email: "futsalhub@gmail.com",
@@ -35,11 +35,11 @@ describe("POST/registerOwner", () => {
   });
 });
 
-describe("POST/registerOwner", () => {
+describe("POST/owner/register", () => {
   describe("Error register Owner", () => {
     test("error empty field email", (done) => {
       request(app)
-        .post("/registerOwner")
+        .post("/owner/register")
         .send({
           username: "test",
           email: "",
@@ -61,11 +61,11 @@ describe("POST/registerOwner", () => {
   });
 });
 
-describe("POST/registerOwner", () => {
-  describe("Error registerOwner", () => {
+describe("POST/owner/register", () => {
+  describe("Error owner/register", () => {
     test("error empty field password", (done) => {
       request(app)
-        .post("/registerOwner")
+        .post("/owner/register")
         .send({
           username: "test",
           email: "futsalhub@gmail.com",
@@ -87,11 +87,11 @@ describe("POST/registerOwner", () => {
   });
 });
 
-describe("POST/registerOwner", () => {
+describe("POST/owner/register", () => {
   describe("Error register Owner", () => {
     test("error empty field role", (done) => {
       request(app)
-        .post("/registerOwner")
+        .post("/owner/register")
         .send({
           username: "test",
           email: "futsalhub@gmail.com",
@@ -113,11 +113,11 @@ describe("POST/registerOwner", () => {
   });
 });
 
-describe("POST/registerOwner", () => {
+describe("POST/owner/register", () => {
   describe("Error register Owner", () => {
     test("error courts value is not an array", (done) => {
       request(app)
-        .post("/registerOwner")
+        .post("/owner/register")
         .send({
           username: "test",
           email: "futsalhub@gmail.com",
@@ -139,11 +139,11 @@ describe("POST/registerOwner", () => {
   });
 });
 
-describe("POST/registerOwner", () => {
+describe("POST/owner/register", () => {
   describe("Error register Owner", () => {
     test("error email field input validity", (done) => {
       request(app)
-        .post("/registerOwner")
+        .post("/owner/register")
         .send({
           username: "test",
           email: "futsalhub",
@@ -168,11 +168,11 @@ describe("POST/registerOwner", () => {
   });
 });
 
-describe("POST/registerOwner", () => {
+describe("POST/owner/register", () => {
   describe("Error register Owner", () => {
     test("error email field input uniqueness", (done) => {
       request(app)
-        .post("/registerOwner")
+        .post("/owner/register")
         .send({
           username: "test",
           email: "futsalhub@gmail.com",
@@ -199,11 +199,11 @@ describe("POST/registerOwner", () => {
 
 // =======================================
 
-describe("POST/loginOwner", () => {
+describe("POST/owner/login", () => {
   describe("Success login Owner", () => {
     test("response  with access token", (done) => {
       request(app)
-        .post("/loginOwner")
+        .post("/owner/login")
         .send({
           email: "futsalhub@gmail.com",
           password: "123456"
@@ -222,11 +222,11 @@ describe("POST/loginOwner", () => {
   });
 });
 
-describe("POST/loginOwner", () => {
+describe("POST/owner/login", () => {
   describe("Error login Owner", () => {
     test("error empty field email", (done) => {
       request(app)
-        .post("/loginOwner")
+        .post("/owner/login")
         .send({
           email: "",
           password: "123456"
@@ -245,11 +245,11 @@ describe("POST/loginOwner", () => {
   });
 });
 
-describe("POST/loginOwner", () => {
-  describe("Error loginOwner", () => {
+describe("POST/owner/login", () => {
+  describe("Error owner/login", () => {
     test("error empty field password", (done) => {
       request(app)
-        .post("/loginOwner")
+        .post("/owner/login")
         .send({
           email: "futsalhub@gmail.com",
           password: ""
@@ -268,11 +268,11 @@ describe("POST/loginOwner", () => {
   });
 });
 
-describe("POST/loginOwner", () => {
-  describe("Error loginOwner", () => {
+describe("POST/owner/login", () => {
+  describe("Error owner/login", () => {
     test("error email field input validity", (done) => {
       request(app)
-        .post("/loginOwner")
+        .post("/owner/login")
         .send({
           email: "futsalhub",
           password: "123456"
@@ -294,11 +294,11 @@ describe("POST/loginOwner", () => {
   });
 });
 
-describe("POST/loginOwner", () => {
+describe("POST/owner/login", () => {
   describe("Error Login Owner", () => {
     test("email is exist, but password is wrong", (done) => {
       request(app)
-        .post("/loginOwner")
+        .post("/owner/login")
         .send({
           email: "futsalhub@gmail.com",
           password: "123"
@@ -317,11 +317,11 @@ describe("POST/loginOwner", () => {
   });
 });
 
-describe("POST/LoginOwner", () => {
-  describe("Error LoginOwner", () => {
+describe("POST/owner/login", () => {
+  describe("Error owner/login", () => {
     test("email doesn't exist in database", (done) => {
       request(app)
-        .post("/loginOwner")
+        .post("/owner/login")
         .send({
           email: "futsalhub_palsu@gmail.com",
           password: "123456"
