@@ -6,5 +6,6 @@ router.get("/:id", BookingController.findOne);
 router.put("/:id", BookingController.update);
 router.delete("/:id", BookingController.destroy);
 router.post("/", BookingController.create);
+router.patch("/:id", BookingController.updatePlayers);
 
 module.exports = router;
