@@ -35,141 +35,141 @@ describe("POST/owner/register", () => {
   });
 });
 
-describe("POST/owner/register", () => {
-  describe("Error register Owner", () => {
-    test("error empty field email", (done) => {
-      request(app)
-        .post("/owner/register")
-        .send({
-          username: "test",
-          email: "",
-          password: "123456",
-          role: "owner",
-          courts: [],
-        })
-        .end((err, res) => {
-          const { body, status } = res;
-          if (err) {
-            return done(err);
-          } else {
-            expect(status).toBe(400);
-            expect(body).toHaveProperty("message", "Email is required");
-            done();
-          }
-        });
-    });
-  });
-});
+// describe("POST/owner/register", () => {
+//   describe("Error register Owner", () => {
+//     test("error empty field email", (done) => {
+//       request(app)
+//         .post("/owner/register")
+//         .send({
+//           username: "test",
+//           email: "",
+//           password: "123456",
+//           role: "owner",
+//           courts: [],
+//         })
+//         .end((err, res) => {
+//           const { body, status } = res;
+//           if (err) {
+//             return done(err);
+//           } else {
+//             expect(status).toBe(400);
+//             expect(body).toHaveProperty("message", "Email is required");
+//             done();
+//           }
+//         });
+//     });
+//   });
+// });
 
-describe("POST/owner/register", () => {
-  describe("Error owner/register", () => {
-    test("error empty field password", (done) => {
-      request(app)
-        .post("/owner/register")
-        .send({
-          username: "test",
-          email: "futsalhub@gmail.com",
-          password: "",
-          role: "owner",
-          courts: [],
-        })
-        .end((err, res) => {
-          const { body, status } = res;
-          if (err) {
-            return done(err);
-          } else {
-            expect(status).toBe(400);
-            expect(body).toHaveProperty("message", "Password is required");
-            done();
-          }
-        });
-    });
-  });
-});
+// describe("POST/owner/register", () => {
+//   describe("Error owner/register", () => {
+//     test("error empty field password", (done) => {
+//       request(app)
+//         .post("/owner/register")
+//         .send({
+//           username: "test",
+//           email: "futsalhub@gmail.com",
+//           password: "",
+//           role: "owner",
+//           courts: [],
+//         })
+//         .end((err, res) => {
+//           const { body, status } = res;
+//           if (err) {
+//             return done(err);
+//           } else {
+//             expect(status).toBe(400);
+//             expect(body).toHaveProperty("message", "Password is required");
+//             done();
+//           }
+//         });
+//     });
+//   });
+// });
 
-describe("POST/owner/register", () => {
-  describe("Error register Owner", () => {
-    test("error empty field role", (done) => {
-      request(app)
-        .post("/owner/register")
-        .send({
-          username: "test",
-          email: "futsalhub@gmail.com",
-          password: "123456",
-          role: "",
-          courts: [],
-        })
-        .end((err, res) => {
-          const { body, status } = res;
-          if (err) {
-            return done(err);
-          } else {
-            expect(status).toBe(400);
-            expect(body).toHaveProperty("message", "Role is required");
-            done();
-          }
-        });
-    });
-  });
-});
+// describe("POST/owner/register", () => {
+//   describe("Error register Owner", () => {
+//     test("error empty field role", (done) => {
+//       request(app)
+//         .post("/owner/register")
+//         .send({
+//           username: "test",
+//           email: "futsalhub@gmail.com",
+//           password: "123456",
+//           role: "",
+//           courts: [],
+//         })
+//         .end((err, res) => {
+//           const { body, status } = res;
+//           if (err) {
+//             return done(err);
+//           } else {
+//             expect(status).toBe(400);
+//             expect(body).toHaveProperty("message", "Role is required");
+//             done();
+//           }
+//         });
+//     });
+//   });
+// });
 
-describe("POST/owner/register", () => {
-  describe("Error register Owner", () => {
-    test("error courts value is not an array", (done) => {
-      request(app)
-        .post("/owner/register")
-        .send({
-          username: "test",
-          email: "futsalhub@gmail.com",
-          password: "123456",
-          role: "owner",
-          courts: "",
-        })
-        .end((err, res) => {
-          const { body, status } = res;
-          if (err) {
-            return done(err);
-          } else {
-            expect(status).toBe(400);
-            expect(body).toHaveProperty(
-              "message",
-              "courts must be alist of array"
-            );
-            done();
-          }
-        });
-    });
-  });
-});
+// describe("POST/owner/register", () => {
+//   describe("Error register Owner", () => {
+//     test("error courts value is not an array", (done) => {
+//       request(app)
+//         .post("/owner/register")
+//         .send({
+//           username: "test",
+//           email: "futsalhub@gmail.com",
+//           password: "123456",
+//           role: "owner",
+//           courts: "",
+//         })
+//         .end((err, res) => {
+//           const { body, status } = res;
+//           if (err) {
+//             return done(err);
+//           } else {
+//             expect(status).toBe(400);
+//             expect(body).toHaveProperty(
+//               "message",
+//               "courts must be alist of array"
+//             );
+//             done();
+//           }
+//         });
+//     });
+//   });
+// });
 
-describe("POST/owner/register", () => {
-  describe("Error register Owner", () => {
-    test("error email field input validity", (done) => {
-      request(app)
-        .post("/owner/register")
-        .send({
-          username: "test",
-          email: "futsalhub",
-          password: "123456",
-          role: "owner",
-          courts: [],
-        })
-        .end((err, res) => {
-          const { body, status } = res;
-          if (err) {
-            return done(err);
-          } else {
-            expect(status).toBe(400);
-            expect(body).toHaveProperty(
-              "message",
-              "Email input must be a valid email"
-            );
-            done();
-          }
-        });
-    });
-  });
-});
+// describe("POST/owner/register", () => {
+//   describe("Error register Owner", () => {
+//     test("error email field input validity", (done) => {
+//       request(app)
+//         .post("/owner/register")
+//         .send({
+//           username: "test",
+//           email: "futsalhub",
+//           password: "123456",
+//           role: "owner",
+//           courts: [],
+//         })
+//         .end((err, res) => {
+//           const { body, status } = res;
+//           if (err) {
+//             return done(err);
+//           } else {
+//             expect(status).toBe(400);
+//             expect(body).toHaveProperty(
+//               "message",
+//               "Email input must be a valid email"
+//             );
+//             done();
+//           }
+//         });
+//     });
+//   });
+// });
 
 describe("POST/owner/register", () => {
   describe("Error register Owner", () => {
@@ -225,77 +225,77 @@ describe("POST/owner/login", () => {
   });
 });
 
-describe("POST/owner/login", () => {
-  describe("Error login Owner", () => {
-    test("error empty field email", (done) => {
-      request(app)
-        .post("/owner/login")
-        .send({
-          email: "",
-          password: "123456",
-        })
-        .end((err, res) => {
-          const { body, status } = res;
-          if (err) {
-            return done(err);
-          } else {
-            expect(status).toBe(400);
-            expect(body).toHaveProperty("message", "Email is required");
-            done();
-          }
-        });
-    });
-  });
-});
+// describe("POST/owner/login", () => {
+//   describe("Error login Owner", () => {
+//     test("error empty field email", (done) => {
+//       request(app)
+//         .post("/owner/login")
+//         .send({
+//           email: "",
+//           password: "123456",
+//         })
+//         .end((err, res) => {
+//           const { body, status } = res;
+//           if (err) {
+//             return done(err);
+//           } else {
+//             expect(status).toBe(400);
+//             expect(body).toHaveProperty("message", "Email is required");
+//             done();
+//           }
+//         });
+//     });
+//   });
+// });
 
-describe("POST/owner/login", () => {
-  describe("Error owner/login", () => {
-    test("error empty field password", (done) => {
-      request(app)
-        .post("/owner/login")
-        .send({
-          email: "futsalhub@gmail.com",
-          password: "",
-        })
-        .end((err, res) => {
-          const { body, status } = res;
-          if (err) {
-            return done(err);
-          } else {
-            expect(status).toBe(400);
-            expect(body).toHaveProperty("message", "Password is required");
-            done();
-          }
-        });
-    });
-  });
-});
+// describe("POST/owner/login", () => {
+//   describe("Error owner/login", () => {
+//     test("error empty field password", (done) => {
+//       request(app)
+//         .post("/owner/login")
+//         .send({
+//           email: "futsalhub@gmail.com",
+//           password: "",
+//         })
+//         .end((err, res) => {
+//           const { body, status } = res;
+//           if (err) {
+//             return done(err);
+//           } else {
+//             expect(status).toBe(400);
+//             expect(body).toHaveProperty("message", "Password is required");
+//             done();
+//           }
+//         });
+//     });
+//   });
+// });
 
-describe("POST/owner/login", () => {
-  describe("Error owner/login", () => {
-    test("error email field input validity", (done) => {
-      request(app)
-        .post("/owner/login")
-        .send({
-          email: "futsalhub",
-          password: "123456",
-        })
-        .end((err, res) => {
-          const { body, status } = res;
-          if (err) {
-            return done(err);
-          } else {
-            expect(status).toBe(400);
-            expect(body).toHaveProperty(
-              "message",
-              "Email input must be a valid email"
-            );
-            done();
-          }
-        });
-    });
-  });
-});
+// describe("POST/owner/login", () => {
+//   describe("Error owner/login", () => {
+//     test("error email field input validity", (done) => {
+//       request(app)
+//         .post("/owner/login")
+//         .send({
+//           email: "futsalhub",
+//           password: "123456",
+//         })
+//         .end((err, res) => {
+//           const { body, status } = res;
+//           if (err) {
+//             return done(err);
+//           } else {
+//             expect(status).toBe(400);
+//             expect(body).toHaveProperty(
+//               "message",
+//               "Email input must be a valid email"
+//             );
+//             done();
+//           }
+//         });
+//     });
+//   });
+// });
 
 describe("POST/owner/login", () => {
   describe("Error Login Owner", () => {

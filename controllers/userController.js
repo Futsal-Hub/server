@@ -1,4 +1,6 @@
-const User = require('../models/user')
+const {User} = require('../models')
+const { comparePassword } = require('../helpers/password')
+const { generateToken } = require('../helpers/jwt')
 
 class UserController {
     static register(req, res, next) {
@@ -11,27 +13,30 @@ class UserController {
         }
 
         User.register(payload)
-        .then(result => {
-            res.status(201)
-            res.send(result)
+        .then(response => {
+            res.status(201).json(response.ops[0])
         })
         .catch(error => {
-            res.status(500)
-            res.send({message:'Internal Server Error'})
+            res.status(500).json({message:'Internal Server Error'})
         })
     }
 
     static login(req, res, next) {
-        const { email, password, role } = req.body
-        const payload = { email, password, role }
+        const { email, password } = req.body
+        const payload = { email, password }
         User.login(payload)
-        .then(result => {
-            res.status(200)
-            res.send(result)
+        .then(response => {
+            if (!response) {
+                throw {status: 401, message: `Invalid account`}
+            } else if (comparePassword(password, response.password)) {
+                const access_token = generateToken({id: response._id, email: response.email})
+                res.status(200).json({access_token, user:response})
+            } else {
+                throw {status: 401, message: `Invalid email/password`}
+            }            
         })
         .catch(error => {
-            res.status(500)
-            res.send({message:'Internal Server Error'})
+            res.status(500).json({message:'Internal Server Error'})
         })
     }
 }
