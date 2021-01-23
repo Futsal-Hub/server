@@ -20,7 +20,8 @@
   },
   "homepage": "https://github.com/Futsal-Hub/server#readme",
   "devDependencies": {
-    "jest": "^26.6.3"
+    "jest": "^26.6.3",
+    "supertest": "^6.0.1"
   },
   "dependencies": {
     "express": "^4.17.1",

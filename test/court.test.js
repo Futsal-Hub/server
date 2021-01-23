@@ -1,43 +1,97 @@
-const db = require("./config/mongo");
+const db = require("../config/mongo");
 const request = require("supertest");
-const app = require("./app");
+const app = require("../app");
 let token = "sjflsjfl";
 let courtId;
+const mockCreate = [
+  {
+    name: "lapangan A",
+    price: 120000,
+    type: "grass",
+    position: {
+      lat: 1232425.5,
+      long: 234252,
+    },
+    schedule: [
+      {
+        start: 20,
+        end: 22,
+      },
+    ],
+  },
+  {
+    name: "lapangan B",
+    price: 20000,
+    type: "grass",
+    position: {
+      lat: 1232425.5,
+      long: 234252,
+    },
+    schedule: [
+      {
+        start: 20,
+        end: 22,
+      },
+    ],
+  },
+];
 
-// afterAll(async (done) => {
-//   await db.collection("courts").drop();
-// });
+const insertOne = {
+  name: "lapangan C",
+  price: 120000,
+  type: "grass",
+  position: {
+    lat: 1232425.5,
+    long: 234252,
+  },
+  schedule: [
+    {
+      start: 20,
+      end: 22,
+    },
+  ],
+};
 
-// beforeAll((done) => {
-//   // try {
-//   db.collection("users")
-//     .insertOne({
-//       email: "test@gmail.com",
-//       password: "12345",
-//     })
-//     .then((response) => {
-//       console.log(response);
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
+afterAll((done) => {
+  db.collection("courts")
+    .drop()
+    .then((response) => {
+      done();
+    })
+    .catch((err) => {
+      done(err);
+    });
+});
 
-//   //   const responses = await Promise.all(
-//   //     ,
-//   //     db.collection("courts").insertOne({
-//   //       name: "lapangan A",
-//   //       price: 120000,
-//   //       type: "grass",
-//   //       lat: 1232425.5,
-//   //       long: 234252,
-//   //     })
-//   //   );
-//   //   console.log(responses);
-//   // } catch (error) {
-//   //   console.log("error");
-//   //   console.log(error);
-//   // }
-// });
+beforeAll(async (done) => {
+  // db.collection("courts")
+  //   .insertMany(mockCreate)
+  //   .then((firstResponse) => {
+  //     console.log("success insert many");
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
+  // db.collection("courts")
+  //   .insertOne(insertOne)
+  //   .then((secondResponse) => {
+  //     courtId = secondResponse._id;
+  //     done();
+  //   })
+  //   .catch((err) => {
+  //     console.log(error);
+  //   });
+  try {
+    const responses = await Promise.all([
+      db.collection("courts").insertMany(mockCreate),
+      db.collection("courts").insertOne(insertOne),
+    ]);
+    courtId = responses[1].ops[0]._id;
+    done();
+  } catch (error) {
+    done(error);
+  }
+});
 
 describe("Create Court POST /court", () => {
   describe("Success Create Court", () => {
@@ -49,8 +103,16 @@ describe("Create Court POST /court", () => {
           name: "lapangan A",
           price: 120000,
           type: "grass",
-          lat: 1232425.5,
-          long: 234252,
+          position: {
+            lat: 1232425.5,
+            long: 234252,
+          },
+          schedule: [
+            {
+              start: 20,
+              end: 22,
+            },
+          ],
         })
         .end((err, res) => {
           const { body, status } = res;
@@ -59,8 +121,8 @@ describe("Create Court POST /court", () => {
           expect(body).toHaveProperty("name", "lapangan A");
           expect(body).toHaveProperty("price", 120000);
           expect(body).toHaveProperty("type", "grass");
-          expect(body).toHaveProperty("lat", 1232425.5);
-          expect(body).toHaveProperty("long", 234252);
+          //expect(body).toHaveProperty("position", expect.any(Object));
+          done();
         });
     });
   }),
@@ -115,7 +177,7 @@ describe("Update Court PUT/court/:id", () => {
   describe("Success Update Court", () => {
     test("Update Court With valid Body value", (done) => {
       request(app)
-        .put("/court/:id")
+        .put("/court/" + courtId)
         .set("access_token", token)
         .send({
           name: "lapangan abc",
@@ -136,12 +198,21 @@ describe("Update Court PUT/court/:id", () => {
         .end((err, res) => {
           if (err) console.log(err);
           const { body, status } = res;
-          expect(status).toBe(201);
+          expect(status).toBe(200);
           expect(body).toHaveProperty("name", "lapangan abc");
           expect(body).toHaveProperty("type", "grass");
-          expect(body).toHaveProperty("schedule", "lapangan abc");
+          expect(body).toHaveProperty("schedule", [
+            {
+              id: "1",
+              start: 8,
+              end: 10,
+            },
+          ]);
           expect(body).toHaveProperty("address", "jl.baru");
-          expect(body).toHaveProperty("position", "lsfjlsj");
+          expect(body).toHaveProperty("position", {
+            lon: 892803,
+            lat: 9328092,
+          });
           done();
         });
     });
@@ -149,7 +220,7 @@ describe("Update Court PUT/court/:id", () => {
     describe("Fail Update Court", () => {
       test("Didn't send token", (done) => {
         request(app)
-          .put("/court/:id")
+          .put("/court/" + courtId)
           .send({
             name: "lapangan abc",
             type: "grass",
@@ -167,7 +238,6 @@ describe("Update Court PUT/court/:id", () => {
             },
           })
           .end((err, res) => {
-            if (err) console.log(err);
             const { body, status } = res;
             if (err) return done(err);
 
@@ -183,7 +253,7 @@ describe("Update Court PUT/court/:id", () => {
       describe("Missing Required Field", () => {
         test("User input missing required field", (done) => {
           request(app)
-            .put("/court/" + court)
+            .put("/court/" + courtId)
             .set("access_token", token)
             .send({
               name: "",
@@ -284,4 +354,22 @@ describe("Delete Court DELETE /court/:id", () => {
         });
       });
     });
+});
+
+describe("Read Court GET /court", () => {
+  describe("Get all court with valid authentication", () => {
+    test("Valid token", (done) => {
+      request(app)
+        .get("/court")
+        .set("access_token", token)
+        .end((err, res) => {
+          const { body, status } = res;
+          if (err) return done(err);
+
+          expect(status).toBe(200);
+          expect(body).toEqual(expect.arrayContaining(mockCreate));
+          done();
+        });
+    });
+  });
 });
