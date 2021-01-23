@@ -12,9 +12,9 @@ describe("POST/player/register", () => {
           password: "123456",
           role: "player",
           position: {
-              long: 1234,
-              lat: 1234
-          }
+            long: 1234,
+            lat: 1234,
+          },
         })
         .end((err, res) => {
           const { body, status } = res;
@@ -26,8 +26,8 @@ describe("POST/player/register", () => {
             expect(body).toHaveProperty("email", expect.any(String));
             expect(body).toHaveProperty("password", expect.any(String));
             expect(body).toHaveProperty("role", "player");
-            expect(body.position).toHaveProperty("long", expect.any(Number))
-            expect(body.position).toHaveProperty("lat", expect.any(Number))
+            expect(body.position).toHaveProperty("long", expect.any(Number));
+            expect(body.position).toHaveProperty("lat", expect.any(Number));
             done();
           }
         });
@@ -46,9 +46,9 @@ describe("POST/player/register", () => {
           password: "123456",
           role: "player",
           position: {
-              long: 1234,
-              lat: 1234
-          }
+            long: 1234,
+            lat: 1234,
+          },
         })
         .end((err, res) => {
           const { body, status } = res;
@@ -75,9 +75,9 @@ describe("POST/player/register", () => {
           password: "",
           role: "player",
           position: {
-              long: 1234,
-              lat: 1234
-          }
+            long: 1234,
+            lat: 1234,
+          },
         })
         .end((err, res) => {
           const { body, status } = res;
@@ -104,9 +104,9 @@ describe("POST/player/register", () => {
           password: "123456",
           role: "",
           position: {
-              long: 1234,
-              lat: 1234
-          }
+            long: 1234,
+            lat: 1234,
+          },
         })
         .end((err, res) => {
           const { body, status } = res;
@@ -133,9 +133,9 @@ describe("POST/player/register", () => {
           password: "123456",
           role: "player",
           position: {
-            long: '1234',
-            lat: '1234'
-            }
+            long: "1234",
+            lat: "1234",
+          },
         })
         .end((err, res) => {
           const { body, status } = res;
@@ -143,8 +143,14 @@ describe("POST/player/register", () => {
             return done(err);
           } else {
             expect(status).toBe(400);
-            expect(body).toHaveProperty("message", "position longitude must be a float number");
-            expect(body).toHaveProperty("message", "position longitude must be a float number");
+            expect(body).toHaveProperty(
+              "message",
+              "position longitude must be a float number"
+            );
+            expect(body).toHaveProperty(
+              "message",
+              "position longitude must be a float number"
+            );
             done();
           }
         });
@@ -163,9 +169,9 @@ describe("POST/player/register", () => {
           password: "123456",
           role: "player",
           position: {
-              long: 1234,
-              lat: 1234
-          }
+            long: 1234,
+            lat: 1234,
+          },
         })
         .end((err, res) => {
           const { body, status } = res;
@@ -195,9 +201,9 @@ describe("POST/player/register", () => {
           password: "123456",
           role: "player",
           position: {
-              long: 1234,
-              lat: 1234
-          }
+            long: 1234,
+            lat: 1234,
+          },
         })
         .end((err, res) => {
           const { body, status } = res;
@@ -225,7 +231,7 @@ describe("POST/player/login", () => {
         .post("/player/login")
         .send({
           email: "futsalhub@gmail.com",
-          password: "123456"
+          password: "123456",
         })
         .end((err, res) => {
           const { body, status } = res;
@@ -248,7 +254,7 @@ describe("POST/player/login", () => {
         .post("/player/login")
         .send({
           email: "",
-          password: "123456"
+          password: "123456",
         })
         .end((err, res) => {
           const { body, status } = res;
@@ -271,7 +277,7 @@ describe("POST/player/login", () => {
         .post("/player/login")
         .send({
           email: "futsalhub@gmail.com",
-          password: ""
+          password: "",
         })
         .end((err, res) => {
           const { body, status } = res;
@@ -294,7 +300,7 @@ describe("POST/player/login", () => {
         .post("/player/login")
         .send({
           email: "futsalhub",
-          password: "123456"
+          password: "123456",
         })
         .end((err, res) => {
           const { body, status } = res;
@@ -320,7 +326,7 @@ describe("POST/player/login", () => {
         .post("/player/login")
         .send({
           email: "futsalhub@gmail.com",
-          password: "123"
+          password: "123",
         })
         .end((err, res) => {
           const { body, status } = res;
@@ -343,7 +349,7 @@ describe("POST/player/login", () => {
         .post("/player/login")
         .send({
           email: "futsalhub_palsu@gmail.com",
-          password: "123456"
+          password: "123456",
         })
         .end((err, res) => {
           const { body, status } = res;
