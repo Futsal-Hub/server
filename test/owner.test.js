@@ -11,7 +11,7 @@ describe("POST/owner/register", () => {
           email: "futsalhub@gmail.com",
           password: "123456",
           role: "owner",
-          courts: []
+          courts: [],
         })
         .end((err, res) => {
           const { body, status } = res;
@@ -45,7 +45,7 @@ describe("POST/owner/register", () => {
           email: "",
           password: "123456",
           role: "owner",
-          courts: []
+          courts: [],
         })
         .end((err, res) => {
           const { body, status } = res;
@@ -71,7 +71,7 @@ describe("POST/owner/register", () => {
           email: "futsalhub@gmail.com",
           password: "",
           role: "owner",
-          courts: []
+          courts: [],
         })
         .end((err, res) => {
           const { body, status } = res;
@@ -97,7 +97,7 @@ describe("POST/owner/register", () => {
           email: "futsalhub@gmail.com",
           password: "123456",
           role: "",
-          courts: []
+          courts: [],
         })
         .end((err, res) => {
           const { body, status } = res;
@@ -123,7 +123,7 @@ describe("POST/owner/register", () => {
           email: "futsalhub@gmail.com",
           password: "123456",
           role: "owner",
-          courts: ""
+          courts: "",
         })
         .end((err, res) => {
           const { body, status } = res;
@@ -131,7 +131,10 @@ describe("POST/owner/register", () => {
             return done(err);
           } else {
             expect(status).toBe(400);
-            expect(body).toHaveProperty("message", "courts must be alist of array");
+            expect(body).toHaveProperty(
+              "message",
+              "courts must be alist of array"
+            );
             done();
           }
         });
@@ -149,7 +152,7 @@ describe("POST/owner/register", () => {
           email: "futsalhub",
           password: "123456",
           role: "owner",
-          courts: []
+          courts: [],
         })
         .end((err, res) => {
           const { body, status } = res;
@@ -178,7 +181,7 @@ describe("POST/owner/register", () => {
           email: "futsalhub@gmail.com",
           password: "123456",
           role: "owner",
-          courts: []
+          courts: [],
         })
         .end((err, res) => {
           const { body, status } = res;
@@ -206,7 +209,7 @@ describe("POST/owner/login", () => {
         .post("/owner/login")
         .send({
           email: "futsalhub@gmail.com",
-          password: "123456"
+          password: "123456",
         })
         .end((err, res) => {
           const { body, status } = res;
@@ -229,7 +232,7 @@ describe("POST/owner/login", () => {
         .post("/owner/login")
         .send({
           email: "",
-          password: "123456"
+          password: "123456",
         })
         .end((err, res) => {
           const { body, status } = res;
@@ -252,7 +255,7 @@ describe("POST/owner/login", () => {
         .post("/owner/login")
         .send({
           email: "futsalhub@gmail.com",
-          password: ""
+          password: "",
         })
         .end((err, res) => {
           const { body, status } = res;
@@ -275,7 +278,7 @@ describe("POST/owner/login", () => {
         .post("/owner/login")
         .send({
           email: "futsalhub",
-          password: "123456"
+          password: "123456",
         })
         .end((err, res) => {
           const { body, status } = res;
@@ -301,7 +304,7 @@ describe("POST/owner/login", () => {
         .post("/owner/login")
         .send({
           email: "futsalhub@gmail.com",
-          password: "123"
+          password: "123",
         })
         .end((err, res) => {
           const { body, status } = res;
@@ -324,7 +327,7 @@ describe("POST/owner/login", () => {
         .post("/owner/login")
         .send({
           email: "futsalhub_palsu@gmail.com",
-          password: "123456"
+          password: "123456",
         })
         .end((err, res) => {
           const { body, status } = res;
