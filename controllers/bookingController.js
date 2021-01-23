@@ -1,4 +1,4 @@
-const Booking = require("../models/Booking");
+const {Booking} = require("../models");
 
 class BookingController {
   static async create(req, res, next) {
