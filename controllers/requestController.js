@@ -2,20 +2,21 @@ const { Request } = require("../models");
 
 class RequestController {
   static async create(req, res, next) {
-    const { origin, destination, type, status } = req.body;
+    const { origin, destination, status } = req.body;
     const payload = {
       origin,
       destination,
-      type,
       status,
     };
+    console.log("masuk create");
+    console.log(payload);
 
-    try {
-      const response = await Request.create(payload);
-      res.status(201).json(response.ops[0]);
-    } catch (error) {
-      console.log(error);
-    }
+    // try {
+    //   const response = await Request.create(payload);
+    //   res.status(201).json(response.ops[0]);
+    // } catch (error) {
+    //   console.log(error);
+    // }
   }
 
   static async findAllReceived(req, res, next) {

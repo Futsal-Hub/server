@@ -1,8 +1,8 @@
-const {Court} = require("../models");
+const { Court } = require("../models");
 
 class CourtController {
   static async create(req, res, next) {
-    const { name, price, type, position, schedule, address } = req.body;
+    const { name, price, type, position, schedule, address, owner } = req.body;
     const payload = {
       name,
       price,
@@ -10,6 +10,7 @@ class CourtController {
       position,
       schedule,
       address,
+      owner,
     };
 
     try {
@@ -44,7 +45,7 @@ class CourtController {
   static async update(req, res, next) {
     console.log("update court masuk");
     const id = req.params.id;
-    const { name, price, type, position, schedule, address } = req.body;
+    const { name, price, type, position, schedule, address, owner } = req.body;
     const payload = {
       name,
       price,
@@ -52,6 +53,7 @@ class CourtController {
       position,
       schedule,
       address,
+      owner,
     };
 
     try {

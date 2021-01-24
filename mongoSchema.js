@@ -4,7 +4,7 @@ user = {
   password: "",
   role: "Owener"|"player"
   if owner
-    courts:[id]
+    courts:[court]
   position: {
     lon,
     lat
@@ -26,23 +26,22 @@ court = {
   position: {
     lon:750859038,
     lat: 74530583905
-  }
-
+  },
+  owner:{}
 }
 
 Booking= {
   id,
-  schedule_id: schedule,
-  player_id:user,
-  players:[user],
-  court_id: id,
+  schedule: schedule,
+  player: {_id:"klfjsdfjlsk",username: "ksfsjfkls"},
+  players:[{_id: "skfjsklfjs", username:"skjfjkslf"}],
+  court: {_id:"sfjsfjsl", owner:{_id: "sjflskfjs"}},
   status: "pending/accepted/rejectd"
 }
 
 "Request" = {
   origin: user,
   destination: user,
-  status:"pending"|"received",
-  type: 1|2
+  status:"pending"|"accepted",
 }
 
