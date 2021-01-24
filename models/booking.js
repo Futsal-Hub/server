@@ -19,6 +19,8 @@ class Booking {
   }
 
   static update(id, payload) {
+    console.log(id, "<<<< id");
+    console.log(payload, "<<< payload");
     return booking.findOneAndUpdate(
       { _id: ObjectId(id) },
       { $set: payload },

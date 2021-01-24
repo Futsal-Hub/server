@@ -15,7 +15,6 @@ class CourtController {
 
     try {
       const response = await Court.create(payload);
-      console.log("suskses create");
       res.status(201).json(response.ops[0]);
     } catch (error) {
       console.log(error);
@@ -43,7 +42,6 @@ class CourtController {
   }
 
   static async update(req, res, next) {
-    console.log("update court masuk");
     const id = req.params.id;
     const { name, price, type, position, schedule, address, owner } = req.body;
     const payload = {

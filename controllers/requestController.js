@@ -8,15 +8,13 @@ class RequestController {
       destination,
       status,
     };
-    console.log("masuk create");
-    console.log(payload);
 
-    // try {
-    //   const response = await Request.create(payload);
-    //   res.status(201).json(response.ops[0]);
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    try {
+      const response = await Request.create(payload);
+      res.status(201).json(response.ops[0]);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   static async findAllReceived(req, res, next) {
@@ -51,14 +49,27 @@ class RequestController {
   }
 
   static async update(req, res, next) {
-    console.log("update Request masuk");
     const id = req.params.id;
-    const { origin, destination, type, status } = req.body;
+    const { origin, destination,status } = req.body;
     const payload = {
       origin,
       destination,
-      type,
       status,
+    };
+
+    try {
+      const response = await Request.update(id, payload);
+      res.status(200).json(response.value);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async updateStatus(req, res, next) {
+    const id = req.params.id;
+    const { status } = req.body;
+    const payload = {
+      status
     };
 
     try {

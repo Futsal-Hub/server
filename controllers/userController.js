@@ -38,6 +38,7 @@ class UserController {
             }            
         })
         .catch(error => {
+            console.log(error);
             if (error.message === 'Invalid account' || error.message === 'Invalid email/password') {
                 res.status(error.status).json({message: error.message})               
             } else {
