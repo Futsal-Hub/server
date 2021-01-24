@@ -2,12 +2,12 @@ const {Booking} = require("../models");
 
 class BookingController {
   static async create(req, res, next) {
-    const { schedule_id, player_id, players, court_id } = req.body;
+    const { schedule, host, players, court } = req.body;
     const payload = {
-      schedule_id,
-      player_id,
+      schedule,
+      host,
       players: [players],
-      court_id,
+      court,
     };
 
     try {
@@ -19,14 +19,13 @@ class BookingController {
   }
   static async update(req, res, next) {
     const { id } = req.params;
-    const { schedule_id, player_id, players, court_id } = req.body;
+    const { schedule, host, players, court } = req.body;
     const payload = {
-      schedule_id,
-      player_id,
+      schedule,
+      host,
       players: [players],
-      court_id,
+      court,
     };
-
     try {
       const response = await Booking.update(id, payload);
       res.status(200).json(response.value);
@@ -36,12 +35,14 @@ class BookingController {
   }
 
   static async updatePlayers(req, res, next) {
-    const { id } = req.params.id;
+    const { id } = req.params;
     const { players } = req.body;
     const payload = { players };
+    console.log(payload, "<<< test");
 
     try {
       const response = await Booking.update(id, payload);
+      console.log(response ,"<<< response");
       res.status(200).json(response.value);
     } catch (error) {}
   }
