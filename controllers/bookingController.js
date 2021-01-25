@@ -8,6 +8,7 @@ class BookingController {
       host,
       players: [players],
       court,
+      date
     };
 
     try {
