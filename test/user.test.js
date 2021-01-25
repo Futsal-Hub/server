@@ -17,7 +17,7 @@ describe("POST/register", () => {
           if (err) {
             return done(err);
           } else {
-            expect(status).toBe(200);
+            expect(status).toBe(201);
             expect(body).toHaveProperty("username");
             expect(body).toHaveProperty("email", expect.any(String));
             expect(body).toHaveProperty("password", expect.any(String));

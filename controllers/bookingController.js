@@ -11,10 +11,16 @@ class BookingController {
     };
 
     try {
+      if (payload.host === "" || payload.host ===  undefined) {
+        throw {
+          status: 500,
+          message: "Internal Server Error"
+        }
+      }
       const response = await Booking.create(payload);
       res.status(201).json(response.ops[0]);
     } catch (err) {
-      console.log(err);
+      res.status(err.status).json({message: err.message})
     }
   }
   static async update(req, res, next) {
@@ -27,10 +33,16 @@ class BookingController {
       court,
     };
     try {
+      if (payload.host === "" || payload.host ===  undefined) {
+        throw {
+          status: 500,
+          message: "Internal Server Error"
+        }
+      }
       const response = await Booking.update(id, payload);
       res.status(200).json(response.value);
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      res.status(err.status).json({message: err.message})
     }
   }
 
@@ -61,29 +73,29 @@ class BookingController {
       const response = await Booking.findOne(id);
       res.status(200).json(response);
     } catch (error) {
-      console.log(error);
+      res.status(500).json({message: "Internal Server erro"})
     }
   }
 
   static async findByOwner(req, res, next) {
-    const id = req.params.id;
-
+    const id = req.params.ownerId;
     try {
       const response = await Booking.findByOwner(id);
       res.status(200).json(response);
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      res.status(500).json({message: "Internal Server Error"})
+      
     }
   }
 
   static async findByPlayer(req, res, next) {
-    const id = req.params.id;
+    const id = req.params.playerId;
 
     try {
       const response = await Booking.findByPlayer(id);
       res.status(200).json(response);
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+        res.status(500).json({message: "Internal Server Error"})
     }
   }
   static async destroy(req, res, next) {
@@ -93,7 +105,7 @@ class BookingController {
       const response = await Booking.destroy(id);
       res.status(200).json({ message: "Resource Deleted Successfully" });
     } catch (error) {
-      console.log(error);
+      res.status(500).json({message: "Internal Server Error"})
     }
   }
 }

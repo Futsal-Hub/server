@@ -6,6 +6,7 @@ router.use(authentication);
 router.post("/", RequestController.create);
 router.get("/sent/:userId", RequestController.findAllSent);
 router.get("/received/:userId", RequestController.findAllReceived);
+router.get("/:id", RequestController.findOne);
 router.put("/:id", RequestController.update);
 router.patch("/:id", RequestController.updateStatus);
 router.delete("/:id", RequestController.destroy);

@@ -15,10 +15,18 @@ class CourtController {
     };
 
     try {
+      if (payload.name === undefined || payload.name === "") {
+        throw {
+          status: 500,
+          message: "Internal server error"
+        }
+      }
       const response = await Court.create(payload);
       res.status(201).json(response.ops[0]);
     } catch (error) {
-      console.log(error);
+      if (error.status) {
+        res.status(500).json({message: error.message})
+      }
     }
   }
 
@@ -27,10 +35,9 @@ class CourtController {
       const response = await Court.findAll();
       res.status(200).json(response);
     } catch (error) {
-      console.log(error);
+      res.status(500).json({message: "Internal Server Error"})
     }
   }
-
 
   static async findOne(req, res, next) {
     const id = req.params.id;
@@ -39,7 +46,7 @@ class CourtController {
       const response = await Court.findOne(id);
       res.status(200).json(response);
     } catch (error) {
-      console.log(error);
+      res.status(500).json({message:"Internal Server Error"})
     }
   }
 
@@ -61,7 +68,7 @@ class CourtController {
       const response = await Court.update(id, payload);
       res.status(200).json(response.value);
     } catch (error) {
-      console.log(error);
+      res.status(500).json({message: "Internal Server Error"})
     }
   }
 
@@ -72,7 +79,7 @@ class CourtController {
       const response = await Court.destroy(id);
       res.status(200).json({ message: "Resource Deleted Successfully" });
     } catch (error) {
-      console.log(error);
+      res.status(500).json({message: "Internal Server Error"})
     }
   }
 }

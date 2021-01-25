@@ -10,30 +10,35 @@ class RequestController {
     };
 
     try {
+      if (payload.origin === "" || payload.origin === undefined){
+        throw {
+          message: "error"
+        }
+      }
       const response = await Request.create(payload);
       res.status(201).json(response.ops[0]);
     } catch (error) {
-      console.log(error);
+      res.status(500).json({message: "Internal Server Error"})
     }
   }
 
   static async findAllReceived(req, res, next) {
-    const { id } = req.params;
+    const { userId } = req.params;
     try {
-      const response = await Request.findAllReceived(id);
+      const response = await Request.findAllReceived(userId);
       res.status(200).json(response);
     } catch (error) {
-      console.log(error);
+      res.status(500).json({message: "Internal Server Error"})
     }
   }
 
   static async findAllSent(req, res, next) {
-    const { id } = req.params;
+    const { userId } = req.params;
     try {
-      const response = await Request.findAllSent(id);
+      const response = await Request.findAllSent(userId);
       res.status(200).json(response);
     } catch (error) {
-      console.log(error);
+      res.status(500).json({message: "Internal Server Error"})
     }
   }
 
@@ -44,7 +49,7 @@ class RequestController {
       const response = await Request.findOne(id);
       res.status(200).json(response);
     } catch (error) {
-      console.log(error);
+      res.status(500).json({message: "Internal Server Error"})
     }
   }
 
@@ -76,7 +81,7 @@ class RequestController {
       const response = await Request.update(id, payload);
       res.status(200).json(response.value);
     } catch (error) {
-      console.log(error);
+      res.status(500).json({message: "Internal Server Error"})
     }
   }
 

@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --runInBand --detectOpenHandles",
-    "dev": "NODE_ENV=development nodemon app.js",
-    "start": "node app.js"
+    "test": "jest --runInBand --detectOpenHandles --collectCoverage",
+    "dev": "NODE_ENV=development nodemon server.js",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
