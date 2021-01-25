@@ -53,6 +53,7 @@ class UserController {
     }
 
     static findAll(req, res, next) {
+        console.log("masukt find all user")
         User.findAll()
         .then(response => {
             res.status(200).json(response)
@@ -60,6 +61,7 @@ class UserController {
         .catch(error => {
             res.status(500).json({message:'Internal Server Error'})
         })
+
     }
     
     static uploadPhoto(req, res, next) {

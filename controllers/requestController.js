@@ -1,3 +1,4 @@
+const { ObjectId } = require("mongodb");
 const { Request } = require("../models");
 
 class RequestController {
@@ -8,27 +9,32 @@ class RequestController {
       destination,
       status,
     };
+    payload.destination._id = ObjectId(payload.destination._id);
+    payload.origin._id = ObjectId(payload.destination._id);
 
     try {
-      if (payload.origin === "" || payload.origin === undefined){
+      if (payload.origin === "" || payload.origin === undefined) {
         throw {
-          message: "error"
-        }
+          message: "error",
+        };
       }
       const response = await Request.create(payload);
       res.status(201).json(response.ops[0]);
     } catch (error) {
-      res.status(500).json({message: "Internal Server Error"})
+      res.status(500).json({ message: "Internal Server Error" });
     }
   }
 
   static async findAllReceived(req, res, next) {
+    console.log("masuk received request");
     const { userId } = req.params;
+    console.log(userId, "<<< user id received");
     try {
       const response = await Request.findAllReceived(userId);
+      console.log(response);
       res.status(200).json(response);
     } catch (error) {
-      res.status(500).json({message: "Internal Server Error"})
+      res.status(500).json({ message: "Internal Server Error" });
     }
   }
 
@@ -38,7 +44,7 @@ class RequestController {
       const response = await Request.findAllSent(userId);
       res.status(200).json(response);
     } catch (error) {
-      res.status(500).json({message: "Internal Server Error"})
+      res.status(500).json({ message: "Internal Server Error" });
     }
   }
 
@@ -49,13 +55,13 @@ class RequestController {
       const response = await Request.findOne(id);
       res.status(200).json(response);
     } catch (error) {
-      res.status(500).json({message: "Internal Server Error"})
+      res.status(500).json({ message: "Internal Server Error" });
     }
   }
 
   static async update(req, res, next) {
     const id = req.params.id;
-    const { origin, destination,status } = req.body;
+    const { origin, destination, status } = req.body;
     const payload = {
       origin,
       destination,
@@ -74,14 +80,14 @@ class RequestController {
     const id = req.params.id;
     const { status } = req.body;
     const payload = {
-      status
+      status,
     };
 
     try {
       const response = await Request.update(id, payload);
       res.status(200).json(response.value);
     } catch (error) {
-      res.status(500).json({message: "Internal Server Error"})
+      res.status(500).json({ message: "Internal Server Error" });
     }
   }
 
