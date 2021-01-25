@@ -2,6 +2,8 @@ const { Court } = require("../models");
 
 class CourtController {
   static async create(req, res, next) {
+    console.log(req.body,"<<<< masuk controller")
+
     const { name, price, type, position, schedule, address, owner, photos } = req.body;
     const payload = {
       name,
