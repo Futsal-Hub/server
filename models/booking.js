@@ -15,6 +15,7 @@ class Booking {
   }
 
   static findByOwner(id) {
+    console.log(id, "<<<< findonwer id")
     return booking.find({"court.owner._id": ObjectId(id) }).toArray();
   }
 

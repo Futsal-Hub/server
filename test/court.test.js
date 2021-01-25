@@ -1,40 +1,26 @@
 const db = require("../config/mongo");
 const request = require("supertest");
 const app = require("../app");
-let token = "sjflsjfl";
+const { hashPassword, comparePassword } = require("../helpers/password")
+const { generateToken } = require("../helpers/jwt");
+let token;
 let courtId;
-const mockCreate = [
-  {
-    name: "lapangan A",
-    price: 120000,
-    type: "grass",
-    position: {
-      lat: 1232425.5,
-      long: 234252,
-    },
-    schedule: [
-      {
-        start: 20,
-        end: 22,
-      },
-    ],
+const mockCreate = {
+  name: "lapangan A",
+  price: 120000,
+  type: "grass",
+  position: {
+    lat: 1232425.5,
+    long: 234252,
   },
-  {
-    name: "lapangan B",
-    price: 20000,
-    type: "grass",
-    position: {
-      lat: 1232425.5,
-      long: 234252,
+  schedule: [
+    {
+      start: 20,
+      end: 22,
     },
-    schedule: [
-      {
-        start: 20,
-        end: 22,
-      },
-    ],
-  },
-];
+  ],
+  owner:{}
+}
 
 const insertOne = {
   name: "lapangan C",
@@ -52,41 +38,30 @@ const insertOne = {
   ],
 };
 
-afterAll((done) => {
-  db.collection("courts")
-    .drop()
-    .then((response) => {
-      done();
-    })
-    .catch((err) => {
-      done(err);
-    });
+
+let insertOwner = {
+  username: "sangOwner",
+  email: "owner@gmail.com",
+  password: hashPassword("123456789"),
+  role: "owner"
+
+}
+afterAll( async (done) => {
+  await db.collection("courts").drop()
+  await db.collection("users").drop()
+  done()
 });
 
 beforeAll(async (done) => {
-  // db.collection("courts")
-  //   .insertMany(mockCreate)
-  //   .then((firstResponse) => {
-  //     console.log("success insert many");
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //   });
-  // db.collection("courts")
-  //   .insertOne(insertOne)
-  //   .then((secondResponse) => {
-  //     courtId = secondResponse._id;
-  //     done();
-  //   })
-  //   .catch((err) => {
-  //     console.log(error);
-  //   });
   try {
     const responses = await Promise.all([
-      db.collection("courts").insertMany(mockCreate),
-      db.collection("courts").insertOne(insertOne),
+      db.collection("users").insertOne(insertOwner)
     ]);
-    courtId = responses[1].ops[0]._id;
+    let insertedOwner = responses[0].ops[0]
+    mockCreate.owner = responses[0].ops[0]
+    const insertedCourt = await db.collection("courts").insertOne(mockCreate)
+    courtId = insertedCourt.ops[0]._id;
+    token = generateToken({id:insertedOwner._id, email: insertedOwner.email})
     done();
   } catch (error) {
     done(error);
@@ -105,6 +80,39 @@ describe("Read Court GET /court", () => {
 
           expect(status).toBe(200);
           expect(body).toEqual(expect.any(Array));
+          done();
+        });
+    });
+  });
+});
+
+describe("Read Court GET /court/:id", () => {
+  describe("Get court with valid id", () => {
+    test("Valid id", (done) => {
+      request(app)
+        .get("/court/" + courtId)
+        .set("access_token", token)
+        .end((err, res) => {
+          const { body, status } = res;
+          if (err) return done(err);
+
+          expect(status).toBe(200);
+          expect(body).toEqual(expect.any(Object));
+          done();
+        });
+    });
+  }),
+  describe("Get court with invalid id", () => {
+    test("Invalid id", (done) => {
+      request(app)
+        .get("/court/" + "fsljflsjflskjfl")
+        .set("access_token", token)
+        .end((err, res) => {
+          const { body, status } = res;
+          if (err) return done(err);
+
+          expect(status).toBe(500);
+          expect(body).toHaveProperty("message");
           done();
         });
     });
@@ -142,6 +150,36 @@ describe("Create Court POST /court", () => {
           //expect(body).toHaveProperty("position", expect.any(Object));
           done();
         });
+    }),
+    describe("Fail Create Court", () => {
+      test("Create Court with valid Invalid body value", (done) => {
+        request(app)
+          .post("/court")
+          .set("access_token", token)
+          .send({
+            price: 120000,
+            type: "grass",
+            position: {
+              lat: 1232425.5,
+              long: 234252,
+            },
+            schedule: [
+              {
+                start: 20,
+                end: 22,
+              },
+            ],
+          })
+          .end((err, res) => {
+            const { body, status } = res;
+            if (err) done(err);
+            expect(status).toBe(500);
+            expect(body).toHaveProperty("message");
+            
+            //expect(body).toHaveProperty("position", expect.any(Object));
+            done();
+          });
+      });
     });
   });
   // describe("Fail Create Court", () => {
@@ -234,107 +272,37 @@ describe("Update Court PUT/court/:id", () => {
           done();
         });
     });
+  }),
+  describe("Fail Update Court", () => {
+    test("Update Court With valid Body value", (done) => {
+      request(app)
+        .put("/court/" + "sjfljsfk")
+        .set("access_token", token)
+        .send({
+          name: "lapangan abc",
+          type: "grass",
+          schedule: [
+            {
+              id: "1",
+              start: 8,
+              end: 10,
+            },
+          ],
+          address: "jl.baru",
+          position: {
+            lon: 892803,
+            lat: 9328092,
+          },
+        })
+        .end((err, res) => {
+          if (err) console.log(err);
+          const { body, status } = res;
+          expect(status).toBe(500);
+          expect(body).toHaveProperty("message");
+          done();
+        });
+    });
   });
-  // describe("Fail Update Court", () => {
-  //   test("Didn't send token", (done) => {
-  //     request(app)
-  //       .put("/court/" + courtId)
-  //       .send({
-  //         name: "lapangan abc",
-  //         type: "grass",
-  //         schedule: [
-  //           {
-  //             id: "1",
-  //             start: 8,
-  //             end: 10,
-  //           },
-  //         ],
-  //         address: "jl.baru",
-  //         postion: {
-  //           lon: 892803,
-  //           lat: 9328092,
-  //         },
-  //       })
-  //       .end((err, res) => {
-  //         const { body, status } = res;
-  //         if (err) return done(err);
-
-  //         console.log(body, "<<<<<");
-  //         console.log(status, "<<<<<");
-  //         expect(status).toBe(400);
-  //         expect(body).toHaveProperty("message", "You must login first");
-  //         done();
-  //       });
-  //   });
-  // }),
-  // describe("Fail Update Court", () => {
-  //   describe("Missing Required Field", () => {
-  //     test("User input missing required field", (done) => {
-  //       request(app)
-  //         .put("/court/" + courtId)
-  //         .set("access_token", token)
-  //         .send({
-  //           name: "",
-  //           type: "grass",
-  //           schedule: [
-  //             {
-  //               id: "1",
-  //               start: 8,
-  //               end: 10,
-  //             },
-  //           ],
-  //           address: "jl.baru",
-  //           postion: {
-  //             lon: 892803,
-  //             lat: 9328092,
-  //           },
-  //         })
-  //         .end((err, res) => {
-  //           const { body, status } = res;
-  //           if (err) return done(err);
-
-  //           expect(status).toBe(400);
-  //           expect(body).toHaveProperty("message", "name must be filled");
-  //           done();
-  //         });
-  //     });
-  //   }),
-  //     describe("Negative Number in Integer Field", () => {
-  //       test("User input negative number on stock or price", (done) => {
-  //         request(app)
-  //           .put("/court/" + courtId)
-  //           .set("access_token", token)
-  //           .send({
-  //             name: "",
-  //             type: "grass",
-  //             schedule: [
-  //               {
-  //                 id: "1",
-  //                 start: 8,
-  //                 end: 10,
-  //               },
-  //             ],
-  //             address: "jl.baru",
-  //             postion: {
-  //               lon: 892803,
-  //               lat: 9328092,
-  //             },
-  //             price: -1,
-  //           })
-  //           .end((err, res) => {
-  //             const { body, status } = res;
-  //             if (err) return done(err);
-
-  //             expect(status).toBe(400);
-  //             expect(body).toHaveProperty(
-  //               "message",
-  //               "price can't be less than 0"
-  //             );
-  //             done();
-  //           });
-  //       });
-  //     });
-  // });
 });
 
 describe("Delete Court DELETE /court/:id", () => {
@@ -355,21 +323,22 @@ describe("Delete Court DELETE /court/:id", () => {
           done();
         });
     });
-  });
-  // describe("Fail Delete Court", () => {
-  //   describe("Not having token", () => {
-  //     test("access without token", (done) => {
-  //       request(app)
-  //         .delete("/court/" + courtId)
-  //         .end((err, res) => {
-  //           const { body, status } = res;
-  //           if (err) return done(err);
+  }),
+  describe("Faild Delete Court", () => {
+    test("Delete court with invalid id", (done) => {
+      request(app)
+        .delete("/court/" + "lfjlfjslkfjslk")
+        .set("access_token", token)
+        .end((err, res) => {
+          const { body, status } = res;
+          if (err) return done(err);
 
-  //           expect(status).toBe(400);
-  //           expect(body).toHaveProperty("message", "You must login first");
-  //           done();
-  //         });
-  //     });
-  //   });
-  // });
+          expect(status).toBe(500);
+          expect(body).toHaveProperty(
+            "message"
+          );
+          done();
+        });
+    });
+  });
 });
