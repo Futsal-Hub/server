@@ -9,7 +9,13 @@ class UserModel {
     }
 
     static login(payload){
-        return User.findOne({email: payload.email})
+        return User.findOneAndUpdate({email: payload.email},
+                                    {$set: {"position":payload.position}},
+                                    {returnOriginal:false})
+    }
+
+    static findAll(){
+        return User.find().toArray();
     }
 
 } 
