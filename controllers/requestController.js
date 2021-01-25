@@ -26,9 +26,7 @@ class RequestController {
   }
 
   static async findAllReceived(req, res, next) {
-    console.log("masuk received request");
     const { userId } = req.params;
-    console.log(userId, "<<< user id received");
     try {
       const response = await Request.findAllReceived(userId);
       console.log(response);

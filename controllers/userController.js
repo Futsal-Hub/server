@@ -4,7 +4,6 @@ const { generateToken } = require('../helpers/jwt');
 
 class UserController {
     static register(req, res, next) {
-        console.log(req.body, "<<< register")
         const { username, email, password, role } = req.body
         let payload;
         if (role === "owner") {
@@ -26,11 +25,8 @@ class UserController {
     }
 
     static login(req, res, next) {
-        console.log("Masuk Login");
-        console.log(req.body)
         const { email, password, position } = req.body
         const payload = { email, password, position }
-        console.log(payload)
         User.login(payload)
         .then(response => {
             if (!response) {
@@ -43,7 +39,6 @@ class UserController {
             }            
         })
         .catch(error => {
-            console.log(error, "<<< error");
             if (error.message === 'Invalid account' || error.message === 'Invalid email/password') {
                 res.status(error.status).json({message: error.message})               
             } else {
@@ -53,7 +48,6 @@ class UserController {
     }
 
     static findAll(req, res, next) {
-        console.log("masukt find all user")
         User.findAll()
         .then(response => {
             res.status(200).json(response)

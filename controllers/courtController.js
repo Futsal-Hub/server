@@ -1,30 +1,37 @@
 const { Court } = require("../models");
+const axios = require('axios')
 
 class CourtController {
   static async create(req, res, next) {
-    console.log(req.body,"<<<< masuk controller")
-
-    const { name, price, type, position, schedule, address, owner, photos } = req.body;
-    const payload = {
-      name,
-      price,
-      type,
-      position,
-      schedule,
-      address,
-      owner,
-      photos,
-    };
-
     try {
-      if (payload.name === undefined || payload.name === "") {
+      const { name, price, type, position, schedule, address, owner, photos } = req.body;    
+      if (name === undefined || name === "") {
         throw {
           status: 500,
           message: "Internal server error"
         }
+      }      
+      const payload = {
+        name,
+        price,
+        type,
+        position,
+        schedule,
+        address,
+        owner,
+        photos,
+      };
+      const { data } = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${payload.address}&key=${process.env.GOOGLE_MAP_API}`)
+      if (data.status === "OK") {
+        payload.position = {
+          lat:data.results[0].geometry.location.lat,
+          lng:data.results[0].geometry.location.lng
+        }
+        const response = await Court.create(payload);
+        res.status(201).json(response.ops[0]);
+      } else {
+        throw {status: 400, message: `Invalid address`}
       }
-      const response = await Court.create(payload);
-      res.status(201).json(response.ops[0]);
     } catch (error) {
       if (error.status) {
         res.status(500).json({message: error.message})
