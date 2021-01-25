@@ -2,7 +2,7 @@ const {Booking} = require("../models");
 
 class BookingController {
   static async create(req, res, next) {
-    const { schedule, host, players, court } = req.body;
+    const { schedule, host, players, court, date } = req.body;
     const payload = {
       schedule,
       host,
@@ -26,12 +26,13 @@ class BookingController {
   }
   static async update(req, res, next) {
     const { id } = req.params;
-    const { schedule, host, players, court } = req.body;
+    const { schedule, host, players, court, date } = req.body;
     const payload = {
       schedule,
       host,
       players: [players],
       court,
+      date
     };
     try {
       if (payload.host === "" || payload.host ===  undefined) {
