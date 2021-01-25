@@ -127,3 +127,28 @@ describe("POST/login", () => {
 //     });
 //   });
 // });
+
+let token ='kkkjkj'
+describe("GET/users", () => {
+  describe("Success get all user", () => {
+    test("response  with access token", (done) => {
+      request(app)
+        .post("/users")
+        .set("access_token", token)
+        .send({
+          email: "futsalhub@gmail.com",
+          password: "123456",
+        })
+        .end((err, res) => {
+          const { body, status } = res;
+          if (err) {
+            return done(err);
+          } else {
+            expect(status).toBe(200);
+            expect(body).toEqual(expect.any(Array));
+            done();
+          }
+        });
+    });
+  });
+});
