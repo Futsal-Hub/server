@@ -64,6 +64,28 @@ class BookingController {
       console.log(error);
     }
   }
+
+  static async findByOwner(req, res, next) {
+    const id = req.params.id;
+
+    try {
+      const response = await Booking.findByOwner(id);
+      res.status(200).json(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async findByPlayer(req, res, next) {
+    const id = req.params.id;
+
+    try {
+      const response = await Booking.findByPlayer(id);
+      res.status(200).json(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   static async destroy(req, res, next) {
     const { id } = req.params;
 

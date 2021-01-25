@@ -2,7 +2,7 @@ const { Court } = require("../models");
 
 class CourtController {
   static async create(req, res, next) {
-    const { name, price, type, position, schedule, address, owner } = req.body;
+    const { name, price, type, position, schedule, address, owner, photos } = req.body;
     const payload = {
       name,
       price,
@@ -11,6 +11,7 @@ class CourtController {
       schedule,
       address,
       owner,
+      photos,
     };
 
     try {
@@ -30,6 +31,7 @@ class CourtController {
     }
   }
 
+
   static async findOne(req, res, next) {
     const id = req.params.id;
 
@@ -43,7 +45,7 @@ class CourtController {
 
   static async update(req, res, next) {
     const id = req.params.id;
-    const { name, price, type, position, schedule, address, owner } = req.body;
+    const { name, price, type, position, schedule, address, owner, photos } = req.body;
     const payload = {
       name,
       price,
@@ -52,6 +54,7 @@ class CourtController {
       schedule,
       address,
       owner,
+      photos
     };
 
     try {
