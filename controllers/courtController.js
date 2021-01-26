@@ -1,16 +1,30 @@
 const { Court } = require("../models");
-const axios = require('axios')
+const axios = require("axios");
+const imgur = require("../config/imgur");
+const imagemin = require("imagemin");
+const imageminJpegtran = require("imagemin-jpegtran");
+const imageminPngquant = require("imagemin-pngquant");
+const imageminMozjpeg = require("imagemin-mozjpeg");
 
 class CourtController {
   static async create(req, res, next) {
     try {
-      const { name, price, type, position, schedule, address, owner, photos } = req.body;    
+      const {
+        name,
+        price,
+        type,
+        position,
+        schedule,
+        address,
+        owner,
+        photos,
+      } = req.body;
       if (name === undefined || name === "") {
         throw {
           status: 500,
-          message: "Internal server error"
-        }
-      }      
+          message: "Internal server error",
+        };
+      }
       const payload = {
         name,
         price,
@@ -21,21 +35,38 @@ class CourtController {
         owner,
         photos,
       };
-      const { data } = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${payload.address}&key=${process.env.GOOGLE_MAP_API}`)
+
+      const files = await imagemin([`./testPhoto/${req.file.originalname}`], {
+        destination: "./compressed/",
+        plugins: [
+          imageminMozjpeg({
+            quality: 50,
+          }),
+        ],
+      });
+
+      const responseImageUpload = await imgur.uploadFile(
+        `./compressed/${req.file.originalname}`
+      );
+      payload.photos = responseImageUpload.data.link;
+      const { data } = await axios.get(
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${payload.address}&key=${process.env.GOOGLE_MAP_API}`
+      );
       if (data.status === "OK") {
         payload.position = {
-          lat:data.results[0].geometry.location.lat,
-          lng:data.results[0].geometry.location.lng
-        }
+          lat: data.results[0].geometry.location.lat,
+          lng: data.results[0].geometry.location.lng,
+        };
         const response = await Court.create(payload);
         res.status(201).json(response.ops[0]);
       } else {
-        throw {status: 400, message: `Invalid address`}
+        throw { status: 400, message: `Invalid address` };
       }
     } catch (error) {
       if (error.status) {
-        res.status(500).json({message: error.message})
+        res.status(500).json({ message: error.message });
       }
+      console.log(error);
     }
   }
 
@@ -44,7 +75,7 @@ class CourtController {
       const response = await Court.findAll();
       res.status(200).json(response);
     } catch (error) {
-      res.status(500).json({message: "Internal Server Error"})
+      res.status(500).json({ message: "Internal Server Error" });
     }
   }
 
@@ -55,13 +86,22 @@ class CourtController {
       const response = await Court.findOne(id);
       res.status(200).json(response);
     } catch (error) {
-      res.status(500).json({message:"Internal Server Error"})
+      res.status(500).json({ message: "Internal Server Error" });
     }
   }
 
   static async update(req, res, next) {
     const id = req.params.id;
-    const { name, price, type, position, schedule, address, owner, photos } = req.body;
+    const {
+      name,
+      price,
+      type,
+      position,
+      schedule,
+      address,
+      owner,
+      photos,
+    } = req.body;
     const payload = {
       name,
       price,
@@ -70,14 +110,14 @@ class CourtController {
       schedule,
       address,
       owner,
-      photos
+      photos,
     };
 
     try {
       const response = await Court.update(id, payload);
       res.status(200).json(response.value);
     } catch (error) {
-      res.status(500).json({message: "Internal Server Error"})
+      res.status(500).json({ message: "Internal Server Error" });
     }
   }
 
@@ -88,7 +128,7 @@ class CourtController {
       const response = await Court.destroy(id);
       res.status(200).json({ message: "Resource Deleted Successfully" });
     } catch (error) {
-      res.status(500).json({message: "Internal Server Error"})
+      res.status(500).json({ message: "Internal Server Error" });
     }
   }
 }
