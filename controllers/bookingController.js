@@ -1,50 +1,52 @@
-const {Booking} = require("../models");
+const { Booking } = require("../models");
 
 class BookingController {
   static async create(req, res, next) {
-    const { schedule, host, players, court, date } = req.body;
+    const { schedule, host, players, court, date, status } = req.body;
     const payload = {
       schedule,
       host,
       players: [players],
       court,
-      date
+      date,
+      status,
     };
 
     try {
-      if (payload.host === "" || payload.host ===  undefined) {
+      if (payload.host === "" || payload.host === undefined) {
         throw {
           status: 500,
-          message: "Internal Server Error"
-        }
+          message: "Internal Server Error",
+        };
       }
       const response = await Booking.create(payload);
       res.status(201).json(response.ops[0]);
     } catch (err) {
-      res.status(err.status).json({message: err.message})
+      res.status(err.status).json({ message: err.message });
     }
   }
   static async update(req, res, next) {
     const { id } = req.params;
-    const { schedule, host, players, court, date } = req.body;
+    const { schedule, host, players, court, date, status } = req.body;
     const payload = {
       schedule,
       host,
       players: [players],
       court,
-      date
+      date,
+      status,
     };
     try {
-      if (payload.host === "" || payload.host ===  undefined) {
+      if (payload.host === "" || payload.host === undefined) {
         throw {
           status: 500,
-          message: "Internal Server Error"
-        }
+          message: "Internal Server Error",
+        };
       }
       const response = await Booking.update(id, payload);
       res.status(200).json(response.value);
     } catch (err) {
-      res.status(err.status).json({message: err.message})
+      res.status(err.status).json({ message: err.message });
     }
   }
 
@@ -56,7 +58,7 @@ class BookingController {
 
     try {
       const response = await Booking.update(id, payload);
-      console.log(response ,"<<< response");
+      console.log(response, "<<< response");
       res.status(200).json(response.value);
     } catch (error) {}
   }
@@ -75,7 +77,7 @@ class BookingController {
       const response = await Booking.findOne(id);
       res.status(200).json(response);
     } catch (error) {
-      res.status(500).json({message: "Internal Server erro"})
+      res.status(500).json({ message: "Internal Server erro" });
     }
   }
 
@@ -85,8 +87,7 @@ class BookingController {
       const response = await Booking.findByOwner(id);
       res.status(200).json(response);
     } catch (err) {
-      res.status(500).json({message: "Internal Server Error"})
-      
+      res.status(500).json({ message: "Internal Server Error" });
     }
   }
 
@@ -97,7 +98,7 @@ class BookingController {
       const response = await Booking.findByPlayer(id);
       res.status(200).json(response);
     } catch (err) {
-        res.status(500).json({message: "Internal Server Error"})
+      res.status(500).json({ message: "Internal Server Error" });
     }
   }
   static async destroy(req, res, next) {
@@ -107,7 +108,7 @@ class BookingController {
       const response = await Booking.destroy(id);
       res.status(200).json({ message: "Resource Deleted Successfully" });
     } catch (error) {
-      res.status(500).json({message: "Internal Server Error"})
+      res.status(500).json({ message: "Internal Server Error" });
     }
   }
 }
