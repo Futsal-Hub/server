@@ -4,6 +4,7 @@ const { ObjectId } = require("mongodb");
 
 class Court {
   static create(payload) {
+    payload.owner._id = ObjectId(payload.owner._id);
     return court.insertOne(payload);
   }
   static findAll() {

@@ -1,6 +1,8 @@
 const request = require("supertest");
 const app = require("../app");
 
+let access_token;
+
 describe("POST/register", () => {
   describe("Success register user", () => {
     test("response  with success message", (done) => {
@@ -29,33 +31,58 @@ describe("POST/register", () => {
   });
 });
 
-// describe("POST/register", () => {
-//   describe("Error register user", () => {
-//     test("error email field input uniqueness", (done) => {
-//       request(app)
-//         .post("/register")
-//         .send({
-//           username: "test",
-//           email: "futsalhub@gmail.com",
-//           password: "123456",
-//           role: "owner",
-//         })
-//         .end((err, res) => {
-//           const { body, status } = res;
-//           if (err) {
-//             return done(err);
-//           } else {
-//             expect(status).toBe(400);
-//             expect(body).toHaveProperty(
-//               "message",
-//               "Email input is already used"
-//             );
-//             done();
-//           }
-//         });
-//     });
-//   });
-// });
+describe("POST/register", () => {
+  describe("Success register user", () => {
+    test("response  with success message", (done) => {
+      request(app)
+        .post("/register")
+        .send({
+          username: "player",
+          email: "player@gmail.com",
+          password: "123456",
+          role: "player",
+        })
+        .end((err, res) => {
+          const { body, status } = res;
+          if (err) {
+            return done(err);
+          } else {
+            expect(status).toBe(201);
+            expect(body).toHaveProperty("username");
+            expect(body).toHaveProperty("email", expect.any(String));
+            expect(body).toHaveProperty("password", expect.any(String));
+            expect(body).toHaveProperty("role", "player");
+            done();
+          }
+        });
+    });
+  });
+});
+
+describe("POST/register", () => {
+  describe("Error register user", () => {
+    test("error email field input uniqueness", (done) => {
+      request(app)
+        .post("/register")
+        .send({
+          email: "futsalhub@gmail.com",
+          password: "123456",
+          role: "owner",
+        })
+        .end((err, res) => {
+          const { body, status } = res;
+          console.log(body, "<<< body");
+          if (err) {
+            return done(err);
+          } else {
+            expect(status).toBe(500);
+            expect(body).toHaveProperty("message");
+            done();
+          }
+        });
+    });
+  });
+});
 
 // =======================================
 
@@ -75,6 +102,7 @@ describe("POST/login", () => {
           } else {
             expect(status).toBe(200);
             expect(body).toHaveProperty("access_token", expect.any(String));
+            access_token = body.access_token;
             done();
           }
         });
@@ -128,17 +156,12 @@ describe("POST/login", () => {
 //   });
 // });
 
-let token ='kkkjkj'
 describe("GET/users", () => {
   describe("Success get all user", () => {
     test("response  with access token", (done) => {
       request(app)
-        .post("/users")
-        .set("access_token", token)
-        .send({
-          email: "futsalhub@gmail.com",
-          password: "123456",
-        })
+        .get("/users")
+        .set("access_token", access_token)
         .end((err, res) => {
           const { body, status } = res;
           if (err) {
