@@ -87,6 +87,17 @@ class CourtController {
     }
   }
 
+  static async findByOwner(req, res, next) {
+    const { ownerId } = req.params;
+
+    try {
+      const response = await Court.findByOwner(ownerId);
+      res.status(200).json(response);
+    } catch (error) {
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+
   static async update(req, res, next) {
     const id = req.params.id;
     const {

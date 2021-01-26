@@ -10,6 +10,10 @@ class Court {
     return court.find().toArray();
   }
 
+  static findByOwner(id) {
+    return court.find({ "owner._id": ObjectId(id) }).toArray();
+  }
+
   static findOne(id) {
     return court.findOne({ _id: ObjectId(id) });
   }

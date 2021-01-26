@@ -11,16 +11,15 @@ class Booking {
   }
 
   static findOne(id) {
-    return booking.findOne({_id: ObjectId(id)});
+    return booking.findOne({ _id: ObjectId(id) });
   }
 
   static findByOwner(id) {
-    console.log(id, "<<<< findonwer id")
-    return booking.find({"court.owner._id": ObjectId(id) }).toArray();
+    return booking.find({ "court.owner._id": ObjectId(id) }).toArray();
   }
 
   static findByPlayer(id) {
-    return booking.find({"host._id": ObjectId(id) }).toArray();
+    return booking.find({ "host._id": ObjectId(id) }).toArray();
   }
 
   static destroy(id) {
