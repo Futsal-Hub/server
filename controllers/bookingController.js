@@ -11,6 +11,7 @@ class BookingController {
       date,
       status,
     };
+    console.log("masuk create booking");
 
     try {
       if (payload.host === "" || payload.host === undefined) {

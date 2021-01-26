@@ -27,13 +27,12 @@ class CourtController {
         name,
         price,
         type,
-        position,
-        schedule,
+        position: JSON.parse(position),
+        schedule: JSON.parse(schedule),
         address,
-        owner,
+        owner: JSON.parse(owner),
         photos,
       };
-
       const files = await imagemin([`./testPhoto/${req.file.originalname}`], {
         destination: "./compressed/",
         plugins: [
