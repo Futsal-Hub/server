@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">58.33% </span>
+                <span class="strong">54.84% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>21/36</span>
+                <span class='fraction'>17/31</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">58.33% </span>
+                <span class="strong">54.84% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>21/36</span>
+                <span class='fraction'>17/31</span>
             </div>
         
             
@@ -122,18 +122,13 @@
 <a name='L63'></a><a href='#L63'>63</a>
 <a name='L64'></a><a href='#L64'>64</a>
 <a name='L65'></a><a href='#L65'>65</a>
-<a name='L66'></a><a href='#L66'>66</a>
-<a name='L67'></a><a href='#L67'>67</a>
-<a name='L68'></a><a href='#L68'>68</a>
-<a name='L69'></a><a href='#L69'>69</a>
-<a name='L70'></a><a href='#L70'>70</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
+<a name='L66'></a><a href='#L66'>66</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -157,9 +152,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -173,7 +165,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -187,6 +178,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -201,7 +193,6 @@ const { generateToken } = require('../helpers/jwt');
 &nbsp;
 class UserController {
     static register(req, res, next) {
-        console.log(req.body, "&lt;&lt;&lt; register")
         const { username, email, password, role } = req.body
         let payload;
         <span class="missing-if-branch" title="else path not taken" >E</span>if (role === "owner") {
@@ -223,11 +214,8 @@ class UserController {
     }
 &nbsp;
     static login(req, res, next) {
-        console.log("Masuk Login");
-        console.log(req.body)
         const { email, password, position } = req.body
         const payload = { email, password, position }
-        console.log(payload)
         User.login(payload)
         .then(response =&gt; {
             <span class="missing-if-branch" title="if path not taken" >I</span>if (!response) {
@@ -240,7 +228,6 @@ class UserController {
             }            
         })
         .catch(<span class="fstat-no" title="function not covered" >er</span>ror =&gt; {
-<span class="cstat-no" title="statement not covered" >            console.log(error, "&lt;&lt;&lt; error");</span>
 <span class="cstat-no" title="statement not covered" >            if (error.message === 'Invalid account' || error.message === 'Invalid email/password') {</span>
 <span class="cstat-no" title="statement not covered" >                res.status(error.status).json({message: error.message})               </span>
             } else {
@@ -257,6 +244,7 @@ class UserController {
         .catch(<span class="fstat-no" title="function not covered" >er</span>ror =&gt; {
 <span class="cstat-no" title="statement not covered" >            res.status(500).json({message:'Internal Server Error'})</span>
         })
+&nbsp;
     }
     
 <span class="fstat-no" title="function not covered" >    st</span>atic uploadPhoto(req, res, next) {
@@ -271,7 +259,7 @@ module.exports = UserController</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Mon Jan 25 2021 17:11:15 GMT+0700 (Western Indonesia Time)
+                at Tue Jan 26 2021 07:29:30 GMT+0700 (Western Indonesia Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>

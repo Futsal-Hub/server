@@ -18,7 +18,7 @@ class Request {
   static findAllReceived(userId) {
     return request
       .find({
-        "destination._id": userId,
+        "destination._id": ObjectId(userId),
       })
       .toArray();
   }

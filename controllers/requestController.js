@@ -9,8 +9,6 @@ class RequestController {
       destination,
       status,
     };
-    payload.destination._id = ObjectId(payload.destination._id);
-    payload.origin._id = ObjectId(payload.destination._id);
 
     try {
       if (payload.origin === "" || payload.origin === undefined) {
@@ -18,6 +16,8 @@ class RequestController {
           message: "error",
         };
       }
+      payload.destination._id = ObjectId(payload.destination._id);
+      payload.origin._id = ObjectId(payload.destination._id);
       const response = await Request.create(payload);
       res.status(201).json(response.ops[0]);
     } catch (error) {

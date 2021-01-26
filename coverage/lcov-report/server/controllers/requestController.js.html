@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">81.82% </span>
+                <span class="strong">83.33% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>36/44</span>
+                <span class='fraction'>40/48</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">81.82% </span>
+                <span class="strong">83.33% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>36/44</span>
+                <span class='fraction'>40/48</span>
             </div>
         
             
@@ -157,7 +157,12 @@
 <a name='L98'></a><a href='#L98'>98</a>
 <a name='L99'></a><a href='#L99'>99</a>
 <a name='L100'></a><a href='#L100'>100</a>
-<a name='L101'></a><a href='#L101'>101</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
+<a name='L101'></a><a href='#L101'>101</a>
+<a name='L102'></a><a href='#L102'>102</a>
+<a name='L103'></a><a href='#L103'>103</a>
+<a name='L104'></a><a href='#L104'>104</a>
+<a name='L105'></a><a href='#L105'>105</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -176,6 +181,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -185,6 +192,7 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -257,7 +265,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const { Request } = require("../models");
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const { ObjectId } = require("mongodb");
+const { Request } = require("../models");
 &nbsp;
 class RequestController {
   static async create(req, res, next) {
@@ -269,15 +278,17 @@ class RequestController {
     };
 &nbsp;
     try {
-      if (payload.origin === "" || payload.origin === undefined){
+      if (payload.origin === "" || payload.origin === undefined) {
         throw {
-          message: "error"
-        }
+          message: "error",
+        };
       }
+      payload.destination._id = ObjectId(payload.destination._id);
+      payload.origin._id = ObjectId(payload.destination._id);
       const response = await Request.create(payload);
       res.status(201).json(response.ops[0]);
     } catch (error) {
-      res.status(500).json({message: "Internal Server Error"})
+      res.status(500).json({ message: "Internal Server Error" });
     }
   }
 &nbsp;
@@ -285,9 +296,10 @@ class RequestController {
     const { userId } = req.params;
     try {
       const response = await Request.findAllReceived(userId);
+      console.log(response);
       res.status(200).json(response);
     } catch (error) {
-      res.status(500).json({message: "Internal Server Error"})
+      res.status(500).json({ message: "Internal Server Error" });
     }
   }
 &nbsp;
@@ -297,7 +309,7 @@ class RequestController {
       const response = await Request.findAllSent(userId);
       res.status(200).json(response);
     } catch (error) {
-      res.status(500).json({message: "Internal Server Error"})
+      res.status(500).json({ message: "Internal Server Error" });
     }
   }
 &nbsp;
@@ -308,13 +320,13 @@ class RequestController {
       const response = await Request.findOne(id);
       res.status(200).json(response);
     } catch (error) {
-      res.status(500).json({message: "Internal Server Error"})
+      res.status(500).json({ message: "Internal Server Error" });
     }
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  st</span>atic async update(req, res, next) {
     const id = <span class="cstat-no" title="statement not covered" >req.params.id;</span>
-    const { origin, destination,status } = <span class="cstat-no" title="statement not covered" >req.body;</span>
+    const { origin, destination, status } = <span class="cstat-no" title="statement not covered" >req.body;</span>
     const payload = <span class="cstat-no" title="statement not covered" >{</span>
       origin,
       destination,
@@ -333,14 +345,14 @@ class RequestController {
     const id = req.params.id;
     const { status } = req.body;
     const payload = {
-      status
+      status,
     };
 &nbsp;
     try {
       const response = await Request.update(id, payload);
       res.status(200).json(response.value);
     } catch (error) {
-      res.status(500).json({message: "Internal Server Error"})
+      res.status(500).json({ message: "Internal Server Error" });
     }
   }
 &nbsp;
@@ -364,7 +376,7 @@ module.exports = RequestController;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Mon Jan 25 2021 17:11:15 GMT+0700 (Western Indonesia Time)
+                at Tue Jan 26 2021 07:29:30 GMT+0700 (Western Indonesia Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>
