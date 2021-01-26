@@ -176,6 +176,7 @@ describe("Create Court POST /court", () => {
               end: 22,
             },
           ],
+          address: "Jl. Agung Raya 2",
         })
         .end((err, res) => {
           const { body, status } = res;
@@ -184,7 +185,6 @@ describe("Create Court POST /court", () => {
           expect(body).toHaveProperty("name", "lapangan A");
           expect(body).toHaveProperty("price", 120000);
           expect(body).toHaveProperty("type", "grass");
-          //expect(body).toHaveProperty("position", expect.any(Object));
           done();
         });
     }),
@@ -302,10 +302,7 @@ describe("Update Court PUT/court/:id", () => {
             },
           ]);
           expect(body).toHaveProperty("address", "jl.baru");
-          expect(body).toHaveProperty("position", {
-            lon: 892803,
-            lat: 9328092,
-          });
+          expect(body).toHaveProperty("position");
           done();
         });
     });

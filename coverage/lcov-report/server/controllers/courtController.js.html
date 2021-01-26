@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">77.36% </span>
+                <span class="strong">82% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>41/53</span>
+                <span class='fraction'>41/50</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">77.36% </span>
+                <span class="strong">82% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>41/53</span>
+                <span class='fraction'>41/50</span>
             </div>
         
             
@@ -55,7 +55,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -211,11 +211,11 @@
 <a name='L152'></a><a href='#L152'>152</a>
 <a name='L153'></a><a href='#L153'>153</a>
 <a name='L154'></a><a href='#L154'>154</a>
-<a name='L155'></a><a href='#L155'>155</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
+<a name='L155'></a><a href='#L155'>155</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -246,7 +246,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -255,10 +254,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -364,7 +364,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const { Court } = require("../models");
 const axios = require("axios");
 const imgur = require("../config/imgur");
@@ -400,19 +400,19 @@ class CourtController {
         owner: JSON.parse(owner),
         photos,
       };
-      const files = <span class="cstat-no" title="statement not covered" >await imagemin([`./testPhoto/${req.file.originalname}`], {</span>
-        destination: "./compressed/",
-        plugins: [
-          imageminMozjpeg({
-            quality: 50,
-          }),
-        ],
-      });
+      // const files = await imagemin([`./testPhoto/${req.file.originalname}`], {
+      //   destination: "./compressed/",
+      //   plugins: [
+      //     imageminMozjpeg({
+      //       quality: 50,
+      //     }),
+      //   ],
+      // });
 &nbsp;
-      const responseImageUpload = <span class="cstat-no" title="statement not covered" >await imgur.uploadFile(</span>
-        `./compressed/${req.file.originalname}`
-      );
-<span class="cstat-no" title="statement not covered" >      payload.photos = responseImageUpload.data.link;</span>
+      // const responseImageUpload = await imgur.uploadFile(
+      //   `./compressed/${req.file.originalname}`
+      // );
+      // payload.photos = responseImageUpload.data.link;
       const { data } = <span class="cstat-no" title="statement not covered" >await axios.get(</span>
         `https://maps.googleapis.com/maps/api/geocode/json?address=${payload.address}&amp;key=${process.env.GOOGLE_MAP_API}`
       );
@@ -526,7 +526,7 @@ module.exports = CourtController;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Tue Jan 26 2021 20:10:47 GMT+0700 (Western Indonesia Time)
+                at Tue Jan 26 2021 20:56:44 GMT+0700 (Western Indonesia Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>
