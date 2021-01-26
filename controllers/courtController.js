@@ -102,20 +102,30 @@ class CourtController {
       owner,
       photos,
     } = req.body;
-    const payload = {
-      name,
-      price,
-      type,
-      position,
-      schedule,
-      address,
-      owner,
-      photos,
-    };
-
     try {
-      const response = await Court.update(id, payload);
-      res.status(200).json(response.value);
+      const payload = {
+        name,
+        price,
+        type,
+        position,
+        schedule,
+        address,
+        owner,
+        photos,
+      };
+      const { data } = await axios.get(
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${payload.address}&key=${process.env.GOOGLE_MAP_API}`
+      );
+      if (data.status === "OK") {
+        payload.position = {
+          lat: data.results[0].geometry.location.lat,
+          lng: data.results[0].geometry.location.lng,
+        };
+        const response = await Court.update(id, payload);
+        res.status(200).json(response.value);
+      } else {
+        throw { status: 400, message: `Invalid address` };
+      }
     } catch (error) {
       res.status(500).json({ message: "Internal Server Error" });
     }
