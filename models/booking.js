@@ -4,6 +4,7 @@ const { ObjectId } = require("mongodb");
 
 class Booking {
   static create(payload) {
+    payload.host._id = ObjectId(payload.host._id);
     return booking.insertOne(payload);
   }
   static findAll() {
