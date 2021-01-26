@@ -3,6 +3,7 @@ const { Request } = require("../models");
 
 class RequestController {
   static async create(req, res, next) {
+    console.log("masuk create");
     const { origin, destination, status } = req.body;
     const payload = {
       origin,
@@ -68,6 +69,7 @@ class RequestController {
 
     try {
       const response = await Request.update(id, payload);
+      console.log(response, "<<<< response update");
       res.status(200).json(response.value);
     } catch (error) {
       console.log(error);
@@ -83,6 +85,7 @@ class RequestController {
 
     try {
       const response = await Request.update(id, payload);
+      console.log(response, "<<< update status");
       res.status(200).json(response.value);
     } catch (error) {
       res.status(500).json({ message: "Internal Server Error" });

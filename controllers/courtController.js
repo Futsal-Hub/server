@@ -2,8 +2,6 @@ const { Court } = require("../models");
 const axios = require("axios");
 const imgur = require("../config/imgur");
 const imagemin = require("imagemin");
-const imageminJpegtran = require("imagemin-jpegtran");
-const imageminPngquant = require("imagemin-pngquant");
 const imageminMozjpeg = require("imagemin-mozjpeg");
 
 class CourtController {
