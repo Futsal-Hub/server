@@ -23,7 +23,8 @@ class BookingController {
       const response = await Booking.create(payload);
       res.status(201).json(response.ops[0]);
     } catch (err) {
-      res.status(err.status).json({ message: err.message });
+      console.log(err, "<<<< ertt");
+      res.status(500).json({ message: "Internal Server Error" });
     }
   }
   static async update(req, res, next) {

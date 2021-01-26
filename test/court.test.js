@@ -157,36 +157,60 @@ describe("Read Court GET /owner/:ownerId", () => {
 });
 
 describe("Create Court POST /court", () => {
-  describe("Success Create Court", () => {
-    test("Create Court with valid body value", (done) => {
-      request(app)
-        .post("/court")
-        .set("access_token", token)
-        .send({
-          name: "lapangan A",
-          price: 120000,
-          type: "grass",
-          position: {
-            lat: 1232425.5,
-            long: 234252,
-          },
-          schedule: [
-            {
-              start: 20,
-              end: 22,
-            },
-          ],
-          address: "Jl. Agung Raya 2",
-        })
-        .end((err, res) => {
-          const { body, status } = res;
-          if (err) done(err);
-          expect(status).toBe(201);
-          expect(body).toHaveProperty("name", "lapangan A");
-          expect(body).toHaveProperty("price", 120000);
-          expect(body).toHaveProperty("type", "grass");
-          done();
-        });
+  // describe("Success Create Court", () => {
+  //   test("Create Court with valid body value", (done) => {
+  //     request(app)
+  //       .post("/court")
+  //       .set("access_token", token)
+  //       .send({
+  //         name: "lapangan A",
+  //         price: 120000,
+  //         type: "grass",
+  //         position: JSON.stringify({
+  //           lat: 1232425.5,
+  //           long: 234252,
+  //         }),
+  //         schedule: JSON.stringify({
+  //           start: 20,
+  //           end: 22,
+  //         }),
+  //         address: "Jl. Agung Raya 2",
+  //         owner: JSON.stringify({ name: "sangga" }),
+  //       })
+  //       .end((err, res) => {
+  //         const { body, status } = res;
+  //         if (err) done(err);
+  //         expect(status).toBe(201);
+  //         expect(body).toHaveProperty("name", "lapangan A");
+  //         expect(body).toHaveProperty("price", 120000);
+  //         expect(body).toHaveProperty("type", "grass");
+  //         done();
+  //       });
+  //   }),
+  describe("Create Court POST /court", () => {
+    describe("Success Create Court", () => {
+      test("Create Court with valid body value", (done) => {
+        request(app)
+          .post("/court")
+          .set("access_token", token)
+          .attach("name", "lapangan A")
+          .attach("price", 12000)
+          .attach("type", "grass")
+          .attach("position", JSON.stringify({ start: 20, end: 22 }))
+          .attach("schedule", JSON.stringify({ start: 20, end: 22 }))
+          .attach("address")
+          .attach("owner", JSON.stringify({ name: "string" }))
+          .end((err, res) => {
+            console.log(res, "<<< rest");
+            const { body, status } = res;
+            if (err) done(err);
+            expect(status).toBe(201);
+            expect(body).toHaveProperty("name", "lapangan A");
+            expect(body).toHaveProperty("price", 120000);
+            expect(body).toHaveProperty("type", "grass");
+            done();
+          });
+      });
     }),
       describe("Fail Create Court", () => {
         test("Create Court with valid Invalid body value", (done) => {
@@ -219,51 +243,6 @@ describe("Create Court POST /court", () => {
         });
       });
   });
-  // describe("Fail Create Court", () => {
-  //   test("Not Having TOken", (done) => {
-  //     request(app)
-  //       .post("/court")
-  //       .send({
-  //         name: "lapangan A",
-  //         price: 120000,
-  //         type: "grass",
-  //         position: {
-  //           lon: 758079872,
-  //           lat: 298084902840,
-  //         },
-  //       })
-  //       .end((err, res) => {
-  //         const { body, status } = res;
-  //         if (err) return done(err);
-  //         expect(status).toBe(400);
-  //         expect(body).toHaveProperty("message", "You must login first");
-  //         done();
-  //       });
-  //   });
-  // }),
-  // describe("Fail Create Court ", () => {
-  //   test("Missing Required Field", (done) => {
-  //     request(app)
-  //       .post("/court")
-  //       .set("access_token", token)
-  //       .send({
-  //         name: "",
-  //         price: 120000,
-  //         type: "grass",
-  //         position: {
-  //           lon: 758079872,
-  //           lat: 298084902840,
-  //         },
-  //       })
-  //       .end((err, res) => {
-  //         const { body, status } = res;
-  //         if (err) return done(err);
-  //         expect(status).toBe(400);
-  //         expect(body).toHaveProperty("message", "Name Must be Filled");
-  //         done();
-  //       });
-  //   });
-  // });
 });
 
 describe("Update Court PUT/court/:id", () => {

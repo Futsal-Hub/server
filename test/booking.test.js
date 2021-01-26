@@ -3,13 +3,14 @@ const request = require("supertest");
 const app = require("../app");
 const { hashPassword, comparePassword } = require("../helpers/password");
 const { generateToken } = require("../helpers/jwt");
+const { response } = require("express");
 let insertUser = {
   username: "sangsangga",
   email: "sangga@gmail.com",
   password: hashPassword("123456789"),
 };
 
-let user;
+let user, owner;
 
 let insertOwner = {
   username: "sangOwner",
@@ -44,6 +45,7 @@ beforeAll(async (done) => {
       db.collection("users").insertOne(insertUser),
       db.collection("users").insertOne(insertOwner),
     ]);
+    owner = responses[1].ops[0];
     user = await db.collection("users").findOne({ email: insertUser.email });
     console.log(user, "<<< user");
     const insertedOwner = await db
@@ -211,12 +213,12 @@ describe("POST/booking", () => {
         .set("access_token", token)
         .send({
           schedule: { hour: 20, end: 21 },
-          host: { username: "sangga" },
+          host: user,
           players: [
             { _id: "sfjslfk", username: "sangga" },
             { _id: "sfsflksjfljs", username: "sangga2" },
           ],
-          court: { _id: "sfjsfjsl", owner: { _id: "sjflskfjs" } },
+          court: { _id: "sfjsfjsl", owner: owner },
         })
         .end((err, res) => {
           const { body, status } = res;
@@ -228,10 +230,7 @@ describe("POST/booking", () => {
             expect(body).toHaveProperty("schedule");
             expect(body).toHaveProperty("host");
             expect(body).toHaveProperty("players", expect.any(Array)),
-              expect(body).toHaveProperty("court", {
-                _id: "sfjsfjsl",
-                owner: { _id: "sjflskfjs" },
-              });
+              expect(body).toHaveProperty("court");
             done();
           }
         });

@@ -18,6 +18,7 @@ class CourtController {
         photos,
       } = req.body;
       if (name === undefined || name === "") {
+        console.log("error name");
         throw {
           status: 500,
           message: "Internal server error",
@@ -33,19 +34,19 @@ class CourtController {
         owner: JSON.parse(owner),
         photos,
       };
-      // const files = await imagemin([`./testPhoto/${req.file.originalname}`], {
-      //   destination: "./compressed/",
-      //   plugins: [
-      //     imageminMozjpeg({
-      //       quality: 50,
-      //     }),
-      //   ],
-      // });
+      const files = await imagemin([`./testPhoto/${req.file.originalname}`], {
+        destination: "./compressed/",
+        plugins: [
+          imageminMozjpeg({
+            quality: 50,
+          }),
+        ],
+      });
 
-      // const responseImageUpload = await imgur.uploadFile(
-      //   `./compressed/${req.file.originalname}`
-      // );
-      // payload.photos = responseImageUpload.data.link;
+      const responseImageUpload = await imgur.uploadFile(
+        `./compressed/${req.file.originalname}`
+      );
+      payload.photos = responseImageUpload.data.link;
       const { data } = await axios.get(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${payload.address}&key=${process.env.GOOGLE_MAP_API}`
       );
@@ -63,7 +64,7 @@ class CourtController {
       if (error.status) {
         res.status(500).json({ message: error.message });
       }
-      console.log(error);
+      console.log(error, "<<<< errr create court");
     }
   }
 
