@@ -34,7 +34,7 @@ class BookingController {
     const payload = {
       schedule,
       host,
-      players: [players],
+      players: players,
       court,
       date,
       status,
