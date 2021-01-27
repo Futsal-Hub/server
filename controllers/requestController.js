@@ -30,6 +30,7 @@ class RequestController {
 
   static async findAllReceived(req, res, next) {
     const { userId } = req.params;
+    console.log("Masuk findreceived");
     try {
       const response = await Request.findAllReceived(userId);
       console.log(response);
