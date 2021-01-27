@@ -61,10 +61,10 @@ class CourtController {
         throw { status: 400, message: `Invalid address` };
       }
     } catch (error) {
+      console.log(error, "<<<< errr create court");
       if (error.status) {
         res.status(500).json({ message: error.message });
       }
-      console.log(error, "<<<< errr create court");
     }
   }
 

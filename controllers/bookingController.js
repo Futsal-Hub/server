@@ -1,4 +1,5 @@
 const { Booking } = require("../models");
+const { ObjectId } = require("mongodb");
 
 class BookingController {
   static async create(req, res, next) {
@@ -57,12 +58,16 @@ class BookingController {
     const { players } = req.body;
     const payload = { players };
     console.log(payload, "<<< test");
+    console.log(id, "<<<< update id");
 
     try {
       const response = await Booking.update(id, payload);
       console.log(response, "<<< response");
       res.status(200).json(response.value);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error, "<<< err patch");
+      res.status(500).json({ message: "Internal Server Error" });
+    }
   }
   static async findAll(req, res, next) {
     try {
