@@ -24,6 +24,7 @@ class Court {
   }
 
   static update(id, payload) {
+    payload.owner._id = ObjectId(payload.owner._id);
     return court.findOneAndUpdate(
       { _id: ObjectId(id) },
       { $set: payload },
