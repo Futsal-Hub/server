@@ -322,6 +322,64 @@ describe("Update Court PUT/court/:id", () => {
     });
 });
 
+describe("Update Court PUT/court/:id", () => {
+  describe("Success Update Court", () => {
+    test("Update Court with valid body value", (done) => {
+      request(app)
+        .put("/court/" + courtId)
+        .set("access_token", token)
+        .field("name", "lapangan A")
+        .field("price", 12000)
+        .field("type", "grass")
+        .field("position", JSON.stringify({ start: 20, end: 22 }))
+        .field("schedule", JSON.stringify({ start: 20, end: 22 }))
+        .field("address", "Jl. agung raya")
+        .field("owner", JSON.stringify({ name: "string" }))
+        .attach("photos", "testPhoto/1DE9AE63-EDD8-4BBB-A034-ABF3A19C946F.jpg")
+        .end(function (err, res) {
+          console.log(err, "<<< rest");
+          const { body, status } = res;
+          if (err) done(err);
+          expect(status).toBe(201);
+          expect(body).toHaveProperty("name");
+          expect(body).toHaveProperty("price");
+          expect(body).toHaveProperty("type");
+          done();
+        });
+    });
+  }),
+    describe("Fail Update Court", () => {
+      test("Update Court With valid Body value", (done) => {
+        request(app)
+          .put("/court/" + "sjfljsfk")
+          .set("access_token", token)
+          .send({
+            name: "lapangan abc",
+            type: "grass",
+            schedule: [
+              {
+                id: "1",
+                start: 8,
+                end: 10,
+              },
+            ],
+            address: "jl.baru",
+            position: {
+              lon: 892803,
+              lat: 9328092,
+            },
+          })
+          .end((err, res) => {
+            if (err) console.log(err);
+            const { body, status } = res;
+            expect(status).toBe(500);
+            expect(body).toHaveProperty("message");
+            done();
+          });
+      });
+    });
+});
+
 describe("Delete Court DELETE /court/:id", () => {
   describe("Success Delete Court", () => {
     test("Delete court with valid id", (done) => {
