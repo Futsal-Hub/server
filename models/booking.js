@@ -29,14 +29,14 @@ class Booking {
   }
 
   static update(id, payload) {
-    console.log(id, "<<<< id");
-    console.log(payload, "<<< payload");
-    payload.host._id = ObjectId(payload.host._id);
+    if (payload.host && payload.court) {
+      payload.host._id = ObjectId(payload.host._id);
+      payload.court.owner._id = ObjectId(payload.court.owner._id);
+    }
     payload.players = payload.players.map((player) => {
       player._id = ObjectId(player._id);
       return player;
     });
-    payload.court.owner._id = ObjectId(payload.court.owner._id);
 
     return booking.findOneAndUpdate(
       { _id: ObjectId(id) },

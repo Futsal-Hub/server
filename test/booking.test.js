@@ -271,15 +271,12 @@ describe("PATCH/booking", () => {
         .send({
           schedule: { hour: 20, end: 21 },
           host: user,
-          players: [
-            { _id: "sfjslfk", username: "sangga" },
-            { _id: "sfsflksjfljs", username: "sangga2" },
-            { _id: "slfjslkfjslkf", username: "sangga10" },
-          ],
-          court: { _id: "sfjsfjsl", owner: { _id: "sjflskfjs" } },
+          players: [user],
+          court: { _id: user._id, owner: user },
         })
         .end((err, res) => {
           const { body, status } = res;
+          console.log(err, "<<< err booking");
           if (err) {
             return done(err);
           } else {
@@ -287,12 +284,8 @@ describe("PATCH/booking", () => {
             console.log(body, "<<<<body edit ");
             expect(body).toHaveProperty("schedule");
             expect(body).toHaveProperty("host");
-            expect(body).toHaveProperty("players", [
-              { _id: "sfjslfk", username: "sangga" },
-              { _id: "sfsflksjfljs", username: "sangga2" },
-              { _id: "slfjslkfjslkf", username: "sangga10" },
-            ]),
-              expect(body).toHaveProperty("court");
+            expect(body).toHaveProperty("players");
+            expect(body).toHaveProperty("court");
             done();
           }
         });
@@ -308,13 +301,9 @@ describe("PUT/booking", () => {
         .set("access_token", token)
         .send({
           schedule: { hour: 22, end: 24 },
-          host: { username: "sangga" },
-          players: [
-            { _id: "sfjslfk", username: "sangga" },
-            { _id: "sfsflksjfljs", username: "sangga2" },
-            { _id: "slfjslkfjslkf", username: "sangga10" },
-          ],
-          court: { _id: "sfjsfjsl", owner: { _id: "sjflskfjs" } },
+          host: user,
+          players: [user],
+          court: { _id: "sfjsfjsl", owner: user },
         })
         .end((err, res) => {
           const { body, status } = res;
@@ -323,12 +312,9 @@ describe("PUT/booking", () => {
           } else {
             expect(status).toBe(200);
             expect(body).toHaveProperty("schedule", { hour: 22, end: 24 });
-            expect(body).toHaveProperty("host", { username: "sangga" });
+            expect(body).toHaveProperty("host");
             expect(body).toHaveProperty("players"),
-              expect(body).toHaveProperty("court", {
-                _id: "sfjsfjsl",
-                owner: { _id: "sjflskfjs" },
-              });
+              expect(body).toHaveProperty("court");
             done();
           }
         });

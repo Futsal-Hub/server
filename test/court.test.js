@@ -193,21 +193,25 @@ describe("Create Court POST /court", () => {
         request(app)
           .post("/court")
           .set("access_token", token)
-          .attach("name", "lapangan A")
-          .attach("price", 12000)
-          .attach("type", "grass")
-          .attach("position", JSON.stringify({ start: 20, end: 22 }))
-          .attach("schedule", JSON.stringify({ start: 20, end: 22 }))
-          .attach("address")
-          .attach("owner", JSON.stringify({ name: "string" }))
-          .end((err, res) => {
-            console.log(res, "<<< rest");
+          .field("name", "lapangan A")
+          .field("price", 12000)
+          .field("type", "grass")
+          .field("position", JSON.stringify({ start: 20, end: 22 }))
+          .field("schedule", JSON.stringify({ start: 20, end: 22 }))
+          .field("address", "Jl. agung raya")
+          .field("owner", JSON.stringify({ name: "string" }))
+          .attach(
+            "photos",
+            "testPhoto/1DE9AE63-EDD8-4BBB-A034-ABF3A19C946F.jpg"
+          )
+          .end(function (err, res) {
+            console.log(err, "<<< rest");
             const { body, status } = res;
             if (err) done(err);
             expect(status).toBe(201);
-            expect(body).toHaveProperty("name", "lapangan A");
-            expect(body).toHaveProperty("price", 120000);
-            expect(body).toHaveProperty("type", "grass");
+            expect(body).toHaveProperty("name");
+            expect(body).toHaveProperty("price");
+            expect(body).toHaveProperty("type");
             done();
           });
       });
