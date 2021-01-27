@@ -4,11 +4,12 @@ const { Request } = require("../models");
 class RequestController {
   static async create(req, res, next) {
     console.log("masuk create");
-    const { origin, destination, status } = req.body;
+    const { origin, destination, status, game } = req.body;
     const payload = {
       origin,
       destination,
       status,
+      game,
     };
 
     try {
@@ -20,6 +21,7 @@ class RequestController {
       payload.destination._id = ObjectId(payload.destination._id);
       payload.origin._id = ObjectId(payload.destination._id);
       const response = await Request.create(payload);
+      console.log(response.ops[0], "<<request create");
       res.status(201).json(response.ops[0]);
     } catch (error) {
       res.status(500).json({ message: "Internal Server Error" });
