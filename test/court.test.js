@@ -251,79 +251,6 @@ describe("Create Court POST /court", () => {
 
 describe("Update Court PUT/court/:id", () => {
   describe("Success Update Court", () => {
-    test("Update Court With valid Body value", (done) => {
-      request(app)
-        .put("/court/" + courtId)
-        .set("access_token", token)
-        .send({
-          name: "lapangan abc",
-          type: "grass",
-          schedule: [
-            {
-              id: "1",
-              start: 8,
-              end: 10,
-            },
-          ],
-          address: "jl.baru",
-          position: {
-            lon: 892803,
-            lat: 9328092,
-          },
-        })
-        .end((err, res) => {
-          if (err) console.log(err);
-          const { body, status } = res;
-          expect(status).toBe(200);
-          expect(body).toHaveProperty("name", "lapangan abc");
-          expect(body).toHaveProperty("type", "grass");
-          expect(body).toHaveProperty("schedule", [
-            {
-              id: "1",
-              start: 8,
-              end: 10,
-            },
-          ]);
-          expect(body).toHaveProperty("address", "jl.baru");
-          expect(body).toHaveProperty("position");
-          done();
-        });
-    });
-  }),
-    describe("Fail Update Court", () => {
-      test("Update Court With valid Body value", (done) => {
-        request(app)
-          .put("/court/" + "sjfljsfk")
-          .set("access_token", token)
-          .send({
-            name: "lapangan abc",
-            type: "grass",
-            schedule: [
-              {
-                id: "1",
-                start: 8,
-                end: 10,
-              },
-            ],
-            address: "jl.baru",
-            position: {
-              lon: 892803,
-              lat: 9328092,
-            },
-          })
-          .end((err, res) => {
-            if (err) console.log(err);
-            const { body, status } = res;
-            expect(status).toBe(500);
-            expect(body).toHaveProperty("message");
-            done();
-          });
-      });
-    });
-});
-
-describe("Update Court PUT/court/:id", () => {
-  describe("Success Update Court", () => {
     test("Update Court with valid body value", (done) => {
       request(app)
         .put("/court/" + courtId)
@@ -340,7 +267,7 @@ describe("Update Court PUT/court/:id", () => {
           console.log(err, "<<< rest");
           const { body, status } = res;
           if (err) done(err);
-          expect(status).toBe(201);
+          expect(status).toBe(200);
           expect(body).toHaveProperty("name");
           expect(body).toHaveProperty("price");
           expect(body).toHaveProperty("type");

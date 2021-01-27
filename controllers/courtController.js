@@ -100,6 +100,7 @@ class CourtController {
   }
 
   static async update(req, res, next) {
+    console.log("masuk update");
     const id = req.params.id;
     const {
       name,
@@ -112,6 +113,7 @@ class CourtController {
       photos,
     } = req.body;
     try {
+      console.log(position, "<<< position");
       const payload = {
         name,
         price,
@@ -122,6 +124,7 @@ class CourtController {
         owner: JSON.parse(owner),
         photos,
       };
+      console.log(payload);
       const files = await imagemin([`./testPhoto/${req.file.originalname}`], {
         destination: "./compressed/",
         plugins: [
