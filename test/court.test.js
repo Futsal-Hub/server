@@ -132,7 +132,6 @@ describe("Read Court GET /owner/:ownerId", () => {
         .end((err, res) => {
           const { body, status } = res;
           if (err) return done(err);
-          console.log(body, "<<<< find by owner");
           expect(status).toBe(200);
           expect(body).toEqual(expect.any(Array));
           done();
@@ -205,7 +204,6 @@ describe("Create Court POST /court", () => {
             "testPhoto/1DE9AE63-EDD8-4BBB-A034-ABF3A19C946F.jpg"
           )
           .end(function (err, res) {
-            console.log(err, "<<< rest");
             const { body, status } = res;
             if (err) done(err);
             expect(status).toBe(201);
@@ -264,7 +262,6 @@ describe("Update Court PUT/court/:id", () => {
         .field("owner", JSON.stringify({ name: "string" }))
         .attach("photos", "testPhoto/1DE9AE63-EDD8-4BBB-A034-ABF3A19C946F.jpg")
         .end(function (err, res) {
-          console.log(err, "<<< rest");
           const { body, status } = res;
           if (err) done(err);
           expect(status).toBe(200);
@@ -297,7 +294,7 @@ describe("Update Court PUT/court/:id", () => {
             },
           })
           .end((err, res) => {
-            if (err) console.log(err);
+            if (err) done(err);
             const { body, status } = res;
             expect(status).toBe(500);
             expect(body).toHaveProperty("message");

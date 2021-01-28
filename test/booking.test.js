@@ -276,12 +276,10 @@ describe("PATCH/booking", () => {
         })
         .end((err, res) => {
           const { body, status } = res;
-          console.log(err, "<<< err booking");
           if (err) {
             return done(err);
           } else {
             expect(status).toBe(200);
-            console.log(body, "<<<<body edit ");
             expect(body).toHaveProperty("schedule");
             expect(body).toHaveProperty("host");
             expect(body).toHaveProperty("players");
