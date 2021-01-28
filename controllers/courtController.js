@@ -100,6 +100,7 @@ class CourtController {
   }
 
   static async update(req, res, next) {
+    console.log("masuk update");
     const id = req.params.id;
     const {
       name,
@@ -112,16 +113,30 @@ class CourtController {
       photos,
     } = req.body;
     try {
+      console.log(position, "<<< position");
       const payload = {
         name,
         price,
         type,
-        position,
-        schedule,
+        position: JSON.parse(position),
+        schedule: JSON.parse(schedule),
         address,
-        owner,
+        owner: JSON.parse(owner),
         photos,
       };
+      console.log(payload);
+      const files = await imagemin([`./testPhoto/${req.file.originalname}`], {
+        destination: "./compressed/",
+        plugins: [
+          imageminMozjpeg({
+            quality: 50,
+          }),
+        ],
+      });
+      const responseImageUpload = await imgur.uploadFile(
+        `./compressed/${req.file.originalname}`
+      );
+      payload.photos = responseImageUpload.data.link;
       const { data } = await axios.get(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${payload.address}&key=${process.env.GOOGLE_MAP_API}`
       );
@@ -136,6 +151,7 @@ class CourtController {
         throw { status: 400, message: `Invalid address` };
       }
     } catch (error) {
+      console.log(error, "<<< errorr update");
       res.status(500).json({ message: "Internal Server Error" });
     }
   }

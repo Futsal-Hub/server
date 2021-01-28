@@ -35,7 +35,7 @@ class UserController {
     const payload = { email, password, position };
     User.login(payload)
       .then((response) => {
-        if (!response) {
+        if (!response.value) {
           throw { status: 400, message: `Invalid account` };
         } else if (comparePassword(password, response.value.password)) {
           const access_token = generateToken({
